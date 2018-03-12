@@ -1,0 +1,445 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C0FF5F062056C9B20035315C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FF5F052056C9B20035315C /* AppDelegate.swift */; };
+		C0FF5F082056C9B20035315C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FF5F072056C9B20035315C /* ViewController.swift */; };
+		C0FF5F0B2056C9B20035315C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0FF5F092056C9B20035315C /* Main.storyboard */; };
+		C0FF5F0D2056C9B20035315C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0FF5F0C2056C9B20035315C /* Assets.xcassets */; };
+		C0FF5F102056C9B20035315C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0FF5F0E2056C9B20035315C /* LaunchScreen.storyboard */; };
+		C0FF5F1B2056C9B20035315C /* WebRTCappTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FF5F1A2056C9B20035315C /* WebRTCappTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C0FF5F172056C9B20035315C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0FF5EFA2056C9B20035315C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0FF5F012056C9B20035315C;
+			remoteInfo = WebRTCapp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C0FF5F022056C9B20035315C /* WebRTCapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebRTCapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0FF5F052056C9B20035315C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C0FF5F072056C9B20035315C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C0FF5F0A2056C9B20035315C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C0FF5F0C2056C9B20035315C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C0FF5F0F2056C9B20035315C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C0FF5F112056C9B20035315C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0FF5F162056C9B20035315C /* WebRTCappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebRTCappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0FF5F1A2056C9B20035315C /* WebRTCappTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCappTests.swift; sourceTree = "<group>"; };
+		C0FF5F1C2056C9B20035315C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C0FF5EFF2056C9B20035315C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0FF5F132056C9B20035315C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C0FF5EF92056C9B20035315C = {
+			isa = PBXGroup;
+			children = (
+				C0FF5F042056C9B20035315C /* WebRTCapp */,
+				C0FF5F192056C9B20035315C /* WebRTCappTests */,
+				C0FF5F032056C9B20035315C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C0FF5F032056C9B20035315C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C0FF5F022056C9B20035315C /* WebRTCapp.app */,
+				C0FF5F162056C9B20035315C /* WebRTCappTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C0FF5F042056C9B20035315C /* WebRTCapp */ = {
+			isa = PBXGroup;
+			children = (
+				C0FF5F052056C9B20035315C /* AppDelegate.swift */,
+				C0FF5F072056C9B20035315C /* ViewController.swift */,
+				C0FF5F092056C9B20035315C /* Main.storyboard */,
+				C0FF5F0C2056C9B20035315C /* Assets.xcassets */,
+				C0FF5F0E2056C9B20035315C /* LaunchScreen.storyboard */,
+				C0FF5F112056C9B20035315C /* Info.plist */,
+			);
+			path = WebRTCapp;
+			sourceTree = "<group>";
+		};
+		C0FF5F192056C9B20035315C /* WebRTCappTests */ = {
+			isa = PBXGroup;
+			children = (
+				C0FF5F1A2056C9B20035315C /* WebRTCappTests.swift */,
+				C0FF5F1C2056C9B20035315C /* Info.plist */,
+			);
+			path = WebRTCappTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C0FF5F012056C9B20035315C /* WebRTCapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0FF5F1F2056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCapp" */;
+			buildPhases = (
+				C0FF5EFE2056C9B20035315C /* Sources */,
+				C0FF5EFF2056C9B20035315C /* Frameworks */,
+				C0FF5F002056C9B20035315C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WebRTCapp;
+			productName = WebRTCapp;
+			productReference = C0FF5F022056C9B20035315C /* WebRTCapp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C0FF5F152056C9B20035315C /* WebRTCappTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0FF5F222056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCappTests" */;
+			buildPhases = (
+				C0FF5F122056C9B20035315C /* Sources */,
+				C0FF5F132056C9B20035315C /* Frameworks */,
+				C0FF5F142056C9B20035315C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0FF5F182056C9B20035315C /* PBXTargetDependency */,
+			);
+			name = WebRTCappTests;
+			productName = WebRTCappTests;
+			productReference = C0FF5F162056C9B20035315C /* WebRTCappTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C0FF5EFA2056C9B20035315C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Sergio Paniego Blanco";
+				TargetAttributes = {
+					C0FF5F012056C9B20035315C = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					C0FF5F152056C9B20035315C = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C0FF5F012056C9B20035315C;
+					};
+				};
+			};
+			buildConfigurationList = C0FF5EFD2056C9B20035315C /* Build configuration list for PBXProject "WebRTCapp" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C0FF5EF92056C9B20035315C;
+			productRefGroup = C0FF5F032056C9B20035315C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C0FF5F012056C9B20035315C /* WebRTCapp */,
+				C0FF5F152056C9B20035315C /* WebRTCappTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C0FF5F002056C9B20035315C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0FF5F102056C9B20035315C /* LaunchScreen.storyboard in Resources */,
+				C0FF5F0D2056C9B20035315C /* Assets.xcassets in Resources */,
+				C0FF5F0B2056C9B20035315C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0FF5F142056C9B20035315C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C0FF5EFE2056C9B20035315C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0FF5F082056C9B20035315C /* ViewController.swift in Sources */,
+				C0FF5F062056C9B20035315C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0FF5F122056C9B20035315C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0FF5F1B2056C9B20035315C /* WebRTCappTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0FF5F182056C9B20035315C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0FF5F012056C9B20035315C /* WebRTCapp */;
+			targetProxy = C0FF5F172056C9B20035315C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C0FF5F092056C9B20035315C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0FF5F0A2056C9B20035315C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C0FF5F0E2056C9B20035315C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0FF5F0F2056C9B20035315C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C0FF5F1D2056C9B20035315C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C0FF5F1E2056C9B20035315C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C0FF5F202056C9B20035315C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebRTCapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C0FF5F212056C9B20035315C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebRTCapp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C0FF5F232056C9B20035315C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebRTCappTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCappTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebRTCapp.app/WebRTCapp";
+			};
+			name = Debug;
+		};
+		C0FF5F242056C9B20035315C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebRTCappTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCappTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebRTCapp.app/WebRTCapp";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C0FF5EFD2056C9B20035315C /* Build configuration list for PBXProject "WebRTCapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0FF5F1D2056C9B20035315C /* Debug */,
+				C0FF5F1E2056C9B20035315C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0FF5F1F2056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0FF5F202056C9B20035315C /* Debug */,
+				C0FF5F212056C9B20035315C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0FF5F222056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCappTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0FF5F232056C9B20035315C /* Debug */,
+				C0FF5F242056C9B20035315C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C0FF5EFA2056C9B20035315C /* Project object */;
+}
