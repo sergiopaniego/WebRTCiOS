@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1ECFAA37867958ECF068355C /* Pods_WebRTCappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 998B801499BFB72757368E6E /* Pods_WebRTCappTests.framework */; };
+		39D55D4F21E334C99F83498E /* Pods_WebRTCapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */; };
+		C00F44E620989D110096441B /* WebSocketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00F44E520989D110096441B /* WebSocketListener.swift */; };
+		C028D735207A676B000943F2 /* Pods_WebRTCapp.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C0FD5A8E207A342800371BD5 /* RemoteParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FD5A8D207A342800371BD5 /* RemoteParticipant.swift */; };
 		C0FF5F062056C9B20035315C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FF5F052056C9B20035315C /* AppDelegate.swift */; };
 		C0FF5F082056C9B20035315C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FF5F072056C9B20035315C /* ViewController.swift */; };
 		C0FF5F0B2056C9B20035315C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0FF5F092056C9B20035315C /* Main.storyboard */; };
@@ -25,7 +30,26 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C028D734207A6740000943F2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C028D735207A676B000943F2 /* Pods_WebRTCapp.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		3FF16E321517C0DD83B82159 /* Pods-WebRTCapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebRTCapp/Pods-WebRTCapp.release.xcconfig"; sourceTree = "<group>"; };
+		866664E282AA2BD50EE145DE /* Pods-WebRTCappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCappTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebRTCappTests/Pods-WebRTCappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		998B801499BFB72757368E6E /* Pods_WebRTCappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebRTCappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebRTCapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C00F44E520989D110096441B /* WebSocketListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketListener.swift; sourceTree = "<group>"; };
+		C0FD5A8D207A342800371BD5 /* RemoteParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteParticipant.swift; sourceTree = "<group>"; };
 		C0FF5F022056C9B20035315C /* WebRTCapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebRTCapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FF5F052056C9B20035315C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0FF5F072056C9B20035315C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +60,8 @@
 		C0FF5F162056C9B20035315C /* WebRTCappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebRTCappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FF5F1A2056C9B20035315C /* WebRTCappTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCappTests.swift; sourceTree = "<group>"; };
 		C0FF5F1C2056C9B20035315C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F48D962592B89C7ABD2AF99F /* Pods-WebRTCappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCappTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebRTCappTests/Pods-WebRTCappTests.release.xcconfig"; sourceTree = "<group>"; };
+		F4EC3C8854B40485723C71E7 /* Pods-WebRTCapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebRTCapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebRTCapp/Pods-WebRTCapp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39D55D4F21E334C99F83498E /* Pods_WebRTCapp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,18 +77,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ECFAA37867958ECF068355C /* Pods_WebRTCappTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		286AB63DC1871854CB6883C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */,
+				998B801499BFB72757368E6E /* Pods_WebRTCappTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C0FF5EF92056C9B20035315C = {
 			isa = PBXGroup;
 			children = (
 				C0FF5F042056C9B20035315C /* WebRTCapp */,
 				C0FF5F192056C9B20035315C /* WebRTCappTests */,
 				C0FF5F032056C9B20035315C /* Products */,
+				C53C1C4257C4134BD066C13B /* Pods */,
+				286AB63DC1871854CB6883C0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,6 +122,8 @@
 				C0FF5F0C2056C9B20035315C /* Assets.xcassets */,
 				C0FF5F0E2056C9B20035315C /* LaunchScreen.storyboard */,
 				C0FF5F112056C9B20035315C /* Info.plist */,
+				C0FD5A8D207A342800371BD5 /* RemoteParticipant.swift */,
+				C00F44E520989D110096441B /* WebSocketListener.swift */,
 			);
 			path = WebRTCapp;
 			sourceTree = "<group>";
@@ -96,6 +137,17 @@
 			path = WebRTCappTests;
 			sourceTree = "<group>";
 		};
+		C53C1C4257C4134BD066C13B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F4EC3C8854B40485723C71E7 /* Pods-WebRTCapp.debug.xcconfig */,
+				3FF16E321517C0DD83B82159 /* Pods-WebRTCapp.release.xcconfig */,
+				866664E282AA2BD50EE145DE /* Pods-WebRTCappTests.debug.xcconfig */,
+				F48D962592B89C7ABD2AF99F /* Pods-WebRTCappTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,9 +155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0FF5F1F2056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCapp" */;
 			buildPhases = (
+				594106C4C39B13F13225E7A3 /* [CP] Check Pods Manifest.lock */,
 				C0FF5EFE2056C9B20035315C /* Sources */,
 				C0FF5EFF2056C9B20035315C /* Frameworks */,
 				C0FF5F002056C9B20035315C /* Resources */,
+				435AA92CD614FC3A35914C16 /* [CP] Embed Pods Frameworks */,
+				C028D734207A6740000943F2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -120,6 +175,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0FF5F222056C9B20035315C /* Build configuration list for PBXNativeTarget "WebRTCappTests" */;
 			buildPhases = (
+				4CB519AF88CD929E7127DDE4 /* [CP] Check Pods Manifest.lock */,
 				C0FF5F122056C9B20035315C /* Sources */,
 				C0FF5F132056C9B20035315C /* Frameworks */,
 				C0FF5F142056C9B20035315C /* Resources */,
@@ -194,13 +250,74 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		435AA92CD614FC3A35914C16 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WebRTCapp/Pods-WebRTCapp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${PODS_ROOT}/WebRTC/WebRTC.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebRTCapp/Pods-WebRTCapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4CB519AF88CD929E7127DDE4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WebRTCappTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		594106C4C39B13F13225E7A3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WebRTCapp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C0FF5EFE2056C9B20035315C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				C0FF5F082056C9B20035315C /* ViewController.swift in Sources */,
+				C0FD5A8E207A342800371BD5 /* RemoteParticipant.swift in Sources */,
 				C0FF5F062056C9B20035315C /* AppDelegate.swift in Sources */,
+				C00F44E620989D110096441B /* WebSocketListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,9 +468,12 @@
 		};
 		C0FF5F202056C9B20035315C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4EC3C8854B40485723C71E7 /* Pods-WebRTCapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = WebRTCapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
@@ -365,9 +485,12 @@
 		};
 		C0FF5F212056C9B20035315C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FF16E321517C0DD83B82159 /* Pods-WebRTCapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = WebRTCapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
@@ -379,6 +502,7 @@
 		};
 		C0FF5F232056C9B20035315C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 866664E282AA2BD50EE145DE /* Pods-WebRTCappTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -395,6 +519,7 @@
 		};
 		C0FF5F242056C9B20035315C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48D962592B89C7ABD2AF99F /* Pods-WebRTCappTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

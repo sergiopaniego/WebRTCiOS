@@ -1,0 +1,20 @@
+PODS:
+  - Starscream (3.0.5)
+  - WebRTC (63.11.20455)
+
+DEPENDENCIES:
+  - Starscream (~> 3.0.2)
+  - WebRTC
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Starscream
+    - WebRTC
+
+SPEC CHECKSUMS:
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+  WebRTC: f2a6203584745fe53532633397557876b5d71640
+
+PODFILE CHECKSUM: b3f65177eecc57c0dad47f314feebf9ce81db32d
+
+COCOAPODS: 1.5.0
