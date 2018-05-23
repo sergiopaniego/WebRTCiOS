@@ -6,6 +6,13 @@
 //  Copyright © 2018 Sergio Paniego Blanco. All rights reserved.
 //
 
+
+/*
+    TODO
+        1. Communicate with the example server with the library
+        2. Send the WebRTC coomunication locally using the fake server
+        3. Exchange the fake server to the real one 
+*/
 import UIKit
 import AVFoundation
 
@@ -17,6 +24,9 @@ class ViewController: UIViewController {
     var output: AVCapturePhotoOutput?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var socket: WebSocketListener?
+    @IBOutlet weak var url: UITextField!
+    @IBOutlet weak var sessionName: UITextField!
+    @IBOutlet weak var participantName: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +51,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startSocket(_ sender: UIButton) {
-        socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/room")
+        socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
     }
     
     func getCameraView() {
@@ -80,6 +90,5 @@ class ViewController: UIViewController {
         previewLayer?.frame = cameraView.bounds
         session?.startRunning()
     }
-
 }
 
