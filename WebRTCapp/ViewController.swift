@@ -51,7 +51,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startSocket(_ sender: UIButton) {
-        socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
+        socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionA", participantName: "Participant1")
+        // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
     }
     
     func getCameraView() {

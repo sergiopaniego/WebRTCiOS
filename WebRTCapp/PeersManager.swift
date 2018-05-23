@@ -10,7 +10,7 @@ import Foundation
 
 class PeersManager {
     // init(_) {
-        
+    
     // }
     
     // Function that start everything related with WebRTC use
