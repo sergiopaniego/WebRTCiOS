@@ -7,8 +7,15 @@
 //
 
 import Foundation
+import WebRTC
 
 class PeersManager {
+    
+    var localPeer: RTCPeerConnection
+    var peerConnectionFactory: RTCPeerConnectionFactory
+    private var configuration: RTCConfiguration
+    private var connectionConstraints: RTCMediaConstraints
+    
     // init(_) {
     
     // }
@@ -34,8 +41,21 @@ class PeersManager {
         
     }
     
-    func createRemotePeerConnection() {
+    func createRemotePeerConnection(sdpConstraints: RTCMediaConstraints) {
+        let iceServers: [RTCIceServer]
+        let iceServer = RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])
+        iceServers.append(iceServer)
         
+        
+        configuration = RTCConfiguration()
+        configuration.iceServers = iceServers
+        configuration.bundlePolicy = .maxBundle
+        configuration.rtcpMuxPolicy = .require
+        
+        let connectionConstraintsDict = ["DtlsSrtpKeyAgreement": "true"]
+        connectionConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: connectionConstraintsDict)
+        let delegate = CustomPeerConnectionDelegate()
+        localPeer = peerConnectionFactory.peerConnection(with: configuration, constraints: connectionConstraints, delegate: delegate)
     }
     
     func hangup() {

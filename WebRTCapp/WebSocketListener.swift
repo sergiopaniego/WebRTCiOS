@@ -33,6 +33,7 @@ class WebSocketListener: WebSocketDelegate {
         self.sessionName = sessionName
         self.participantName = participantName
         // self.peersManager = peersManager
+        self.iceCandidatesParams = []
         participants = [String: RemoteParticipant]()
         socket = WebSocket(url: URL(string: url)!)
         socket.disableSSLCertValidation = useSSL
@@ -71,7 +72,7 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-        print("Redieved message: " + text)
+        print("Recieved message: " + text)
         let data = text.data(using: .utf8)!
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [String: Any]
@@ -97,11 +98,11 @@ class WebSocketListener: WebSocketDelegate {
             let value = result[JSONConstants.Value]  as! [[String:Any]]
             if !value.isEmpty {
                 addParticipantsAlreadyInRoom(result: result)
-                self.userId = result[JSONConstants.Id] as? String
-                for var iceCandidate in iceCandidatesParams! {
-                    iceCandidate["endpointName"] = self.userId
-                    sendJson(method: "onIceCandidate",params:  iceCandidate)
-                }
+             }
+            self.userId = result[JSONConstants.Id] as? String
+            for var iceCandidate in iceCandidatesParams! {
+                iceCandidate["endpointName"] = self.userId
+                sendJson(method: "onIceCandidate",params:  iceCandidate)
             }
         } else if result[JSONConstants.Value] != nil {
             print("pong")
@@ -134,7 +135,6 @@ class WebSocketListener: WebSocketDelegate {
     
     func handleMethod(json: Dictionary<String,Any>) {
         if json[JSONConstants.Params] != nil {
-            print(json[JSONConstants.Params])
             let method = json[JSONConstants.Method] as! String
             let params = json[JSONConstants.Params] as! Dictionary<String, Any>
             switch method {
