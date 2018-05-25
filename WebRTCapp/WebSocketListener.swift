@@ -231,4 +231,8 @@ class WebSocketListener: WebSocketDelegate {
         }
     }
     
+    func addIceCandidate(iceCandidateParams: [String: String]) {
+        iceCandidatesParams?.append(iceCandidateParams)
+    }
+    
 }

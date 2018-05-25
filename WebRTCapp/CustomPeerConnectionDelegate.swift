@@ -12,7 +12,6 @@ import WebRTC
 
 class CustomPeerConnectionDelegate: NSObject, RTCPeerConnectionDelegate {
     override init() {
-        <#code#>
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
