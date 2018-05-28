@@ -29,15 +29,6 @@ class remotePeerConnectionDelegate: CustomPeerConnectionDelegate {
         webSocketAdapter.sendJson(method: "onIceCandidate", params: iceCandidateParams)
     }
     
-    /*
-     Map<String, String> iceCandidateParams = new HashMap<>();
-     iceCandidateParams.put("sdpMid", iceCandidate.sdpMid);
-     iceCandidateParams.put("sdpMLineIndex", Integer.toString(iceCandidate.sdpMLineIndex));
-     iceCandidateParams.put("candidate", iceCandidate.sdp);
-     iceCandidateParams.put("endpointName", getRemoteParticipant().getId());
-     webSocketAdapter.sendJson(webSocket, "onIceCandidate", iceCandidateParams);
-     */
-    
     override func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         super.peerConnection(peerConnection, didAdd: stream)
         // Add Media Stream to the view

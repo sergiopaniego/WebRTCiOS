@@ -28,11 +28,11 @@ class WebSocketListener: WebSocketDelegate {
     var localPeer: RTCPeerConnection?
     var peersManager: PeersManager?
     
-    init(url: String, sessionName: String, participantName: String/*, peersManager: PeersManager*/) {
+    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager) {
         self.url = url
         self.sessionName = sessionName
         self.participantName = participantName
-        // self.peersManager = peersManager
+        self.peersManager = peersManager
         self.iceCandidatesParams = []
         participants = [String: RemoteParticipant]()
         socket = WebSocket(url: URL(string: url)!)
@@ -117,12 +117,28 @@ class WebSocketListener: WebSocketDelegate {
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id]
             participants[remoteParticipant.id!] = remoteParticipant
-            // createVideoView(remoteParticipant);
-            // setRemoteParticipantName(participant[JSONConstants.Metadata], remoteParticipant)
-            // peerManager.createRemotePeerConnection(remoteParticipant)
-            // remoteParticipant.peerConnection?.offer(for: <#T##RTCMediaConstraints#>, completionHandler: <#T##((RTCSessionDescription?, Error?) -> Void)?##((RTCSessionDescription?, Error?) -> Void)?##(RTCSessionDescription?, Error?) -> Void#>)
+            createVideoView(remoteParticipant: remoteParticipant);
+            setRemoteParticipantName(name: participant[JSONConstants.Metadata]!, participant: remoteParticipant)
+            self.peersManager?.createRemotePeerConnection(remoteParticipant: remoteParticipant)
+            let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+            remoteParticipant.peerConnection?.offer(for: sdpConstraints, completionHandler: {(sessionDescription, error) in
+                remoteParticipant.peerConnection?.setLocalDescription(sessionDescription!, completionHandler: nil)
+                var remoteOfferParams: [String:String] = [:]
+                remoteOfferParams["sdpOffer"] = sessionDescription?.description
+                remoteOfferParams["sender"] = self.remoteParticipantId! + "_CAMERA"
+                self.sendJson(method: "receiverVideoFRom", params: remoteOfferParams)
+            })
         }
     }
+    
+    func createVideoView(remoteParticipant: RemoteParticipant) {
+        // Creates video view in main view
+    }
+    
+    func setRemoteParticipantName(name: String, participant: RemoteParticipant) {
+        // Sets participant name on video element
+    }
+    
     
     func saveAnwer(json: [String:Any]) {
         let sessionDescription = RTCSessionDescription(type: RTCSdpType.answer, sdp: json["sdpAnswer"] as! String)
@@ -167,9 +183,10 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipant = RemoteParticipant()
         remoteParticipant.id = params[JSONConstants.Id] as? String
         participants[JSONConstants.Id] = remoteParticipant
-        // createVideoView(remoteParticipant)
-        // setRemoteParticipantName(params[JSONConstants.Metadata]["clientData"], remoteParticipant)
-        // peersManager.createRemotePeerConneciton(remoteParticipant)
+        createVideoView(remoteParticipant: remoteParticipant)
+        var metadata = params[JSONConstants.Metadata] as! [String:String]
+        setRemoteParticipantName(name: metadata["clientData"]!, participant: remoteParticipant)
+        self.peersManager?.createRemotePeerConnection(remoteParticipant: remoteParticipant)
     }
     
     func participantPublished(params: Dictionary<String, Any>) {
@@ -177,23 +194,12 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipantPublished: RemoteParticipant = participants[remoteParticipantId!]!
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
         let optionalConstraints = [ "DtlsSrtpKeyAgreement": "true", "RtpDataChannels" : "true", "internalSctpDataChannels" : "true"]
-        remoteParticipantPublished.peerConnection?.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (RTCSessionDescription, Error) in
-            
-            if(Error == nil){
-                print("send offer")
-                
-                remoteParticipantPublished.peerConnection?.setLocalDescription(RTCSessionDescription!, completionHandler: { (Error) in
-                    print("Sending: SDP")
-                    print(RTCSessionDescription as Any)
-                    var remoteOfferParams:  [String: String] = [:]
-                    remoteOfferParams["sdpOffer"] = RTCSessionDescription?.description
-                    remoteOfferParams["sender"] = remoteParticipantPublished.id! + "_webcam"
-                    self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
-                })
-            } else {
-                print("sdp creation error: " + Error.debugDescription)
-            }
-            
+        remoteParticipantPublished.peerConnection?.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (sessionDescription, error) in
+            remoteParticipantPublished.peerConnection?.setLocalDescription(sessionDescription!, completionHandler: nil)
+            var remoteOfferParams:  [String: String] = [:]
+            remoteOfferParams["sdpOffer"] = sessionDescription?.description
+            remoteOfferParams["sender"] = remoteParticipantPublished.id! + "_webcam"
+            self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
         })
     }
     
