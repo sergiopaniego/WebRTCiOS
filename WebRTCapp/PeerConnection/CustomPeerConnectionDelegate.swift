@@ -15,15 +15,15 @@ class CustomPeerConnectionDelegate: NSObject, RTCPeerConnectionDelegate {
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        NSLog("Peer Connectio State changed")
+        NSLog("Peer Connection State changed")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
-        NSLog("Peer Connectio Stream added")
+        NSLog("Peer Connection Stream added")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        NSLog("Peer Connectio Stream removed")
+        NSLog("Peer Connection Stream removed")
     }
     
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {

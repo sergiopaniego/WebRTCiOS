@@ -26,14 +26,16 @@ class WebSocketListener: WebSocketDelegate {
     var remoteParticipantId: String?
     var participants: [String: RemoteParticipant]
     var localPeer: RTCPeerConnection?
-    var peersManager: PeersManager?
+    var peersManager: PeersManager
+    var token: String
     
-    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager) {
+    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String) {
         self.url = url
         self.sessionName = sessionName
         self.participantName = participantName
         self.peersManager = peersManager
         self.iceCandidatesParams = []
+        self.token = token
         participants = [String: RemoteParticipant]()
         socket = WebSocket(url: URL(string: url)!)
         socket.disableSSLCertValidation = useSSL
@@ -48,8 +50,8 @@ class WebSocketListener: WebSocketDelegate {
         joinRoomParams["dataChannels"] = "false"
         joinRoomParams[JSONConstants.Metadata] = "{\"clientData\": \"" + participantName + "\"}"
         joinRoomParams["secret"] = "MY_SECRET"
-        joinRoomParams["session"] = url + sessionName
-        joinRoomParams["token"] = "gr50nzaqe6avt65cg5v06"
+        joinRoomParams["session"] = sessionName
+        joinRoomParams["token"] = token
         sendJson(method: "joinRoom", params: joinRoomParams)
         if localOfferParams != nil {
             sendJson(method: "publishVideo",params: localOfferParams!)
@@ -57,7 +59,8 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func pingMessageHandler() {
-        helloWorldTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(WebSocketListener.doPing), userInfo: nil, repeats: true)
+        helloWorldTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(WebSocketListener.doPing), userInfo: nil, repeats: true)
+        doPing()
     }
     
     @objc func doPing() {
@@ -112,21 +115,27 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func addParticipantsAlreadyInRoom(result: [String: Any]) {
-        for participant in result[JSONConstants.Value] as! [[String: String]] {
-            self.remoteParticipantId = participant[JSONConstants.Id]!
+        let values = result[JSONConstants.Value] as! [[String: Any]]
+        for participant in values {
+            print(participant[JSONConstants.Id]!)
+            self.remoteParticipantId = participant[JSONConstants.Id]! as? String
             let remoteParticipant = RemoteParticipant()
-            remoteParticipant.id = participant[JSONConstants.Id]
+            remoteParticipant.id = participant[JSONConstants.Id] as? String
             participants[remoteParticipant.id!] = remoteParticipant
             createVideoView(remoteParticipant: remoteParticipant);
-            setRemoteParticipantName(name: participant[JSONConstants.Metadata]!, participant: remoteParticipant)
-            self.peersManager?.createRemotePeerConnection(remoteParticipant: remoteParticipant)
+            setRemoteParticipantName(name: participant[JSONConstants.Metadata]! as! String, participant: remoteParticipant)
+            self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-            remoteParticipant.peerConnection?.offer(for: sdpConstraints, completionHandler: {(sessionDescription, error) in
-                remoteParticipant.peerConnection?.setLocalDescription(sessionDescription!, completionHandler: nil)
+            remoteParticipant.peerConnection!.offer(for: sdpConstraints, completionHandler: {(sessionDescription, error) in
+                self.participants[remoteParticipant.id!]?.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
+                    print("ERROR")
+                    print(error!)
+                })
+                print("Session Description: " + sessionDescription!.sdp)
                 var remoteOfferParams: [String:String] = [:]
                 remoteOfferParams["sdpOffer"] = sessionDescription?.description
                 remoteOfferParams["sender"] = self.remoteParticipantId! + "_CAMERA"
-                self.sendJson(method: "receiverVideoFRom", params: remoteOfferParams)
+                self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
             })
         }
     }
@@ -184,9 +193,19 @@ class WebSocketListener: WebSocketDelegate {
         remoteParticipant.id = params[JSONConstants.Id] as? String
         participants[JSONConstants.Id] = remoteParticipant
         createVideoView(remoteParticipant: remoteParticipant)
-        var metadata = params[JSONConstants.Metadata] as! [String:String]
-        setRemoteParticipantName(name: metadata["clientData"]!, participant: remoteParticipant)
-        self.peersManager?.createRemotePeerConnection(remoteParticipant: remoteParticipant)
+        let metadataString = params[JSONConstants.Metadata] as! String
+        let data = metadataString.data(using: .utf8)!
+        do {
+            if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
+            {
+                setRemoteParticipantName(name: metadata["clientData"]! as! String, participant: remoteParticipant)
+                self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
+            } else {
+                print("bad json")
+            }
+        } catch let error as NSError {
+            print(error)
+        }
     }
     
     func participantPublished(params: Dictionary<String, Any>) {
@@ -197,7 +216,7 @@ class WebSocketListener: WebSocketDelegate {
         remoteParticipantPublished.peerConnection?.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (sessionDescription, error) in
             remoteParticipantPublished.peerConnection?.setLocalDescription(sessionDescription!, completionHandler: nil)
             var remoteOfferParams:  [String: String] = [:]
-            remoteOfferParams["sdpOffer"] = sessionDescription?.description
+            remoteOfferParams["sdpOffer"] = sessionDescription!.description
             remoteOfferParams["sender"] = remoteParticipantPublished.id! + "_webcam"
             self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
         })
@@ -230,7 +249,7 @@ class WebSocketListener: WebSocketDelegate {
         do {
             jsonData = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions()) as NSData
             let jsonString = NSString(data: jsonData as Data, encoding: String.Encoding.utf8.rawValue)! as String
-            print("json string = \(jsonString)")
+            print("Sending = \(jsonString)")
             socket.write(string: jsonString)
         } catch _ {
             print ("JSON Failure")

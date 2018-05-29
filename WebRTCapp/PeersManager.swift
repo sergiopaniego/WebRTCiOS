@@ -14,28 +14,32 @@ class PeersManager {
     
     var localPeer: RTCPeerConnection?
     var peerConnectionFactory: RTCPeerConnectionFactory?
-    private var configuration: RTCConfiguration?
-    private var connectionConstraints: RTCMediaConstraints?
-    private var webSocketListener: WebSocketListener?
-    private var webSocket: WebSocket?
-    private var localVideoTrack: RTCVideoTrack?
-    private var localAudioTrack: RTCAudioTrack?
-    private var videoGrabber: RTCVideoCapturer?
+    var configuration: RTCConfiguration?
+    var connectionConstraints: RTCMediaConstraints?
+    var webSocketListener: WebSocketListener?
+    var webSocket: WebSocket?
+    var localVideoTrack: RTCVideoTrack?
+    var localAudioTrack: RTCAudioTrack?
+    var videoGrabber: RTCVideoCapturer?
     
     init() {
+    }
+    
+    func setWebSocketAdapter(webSocketAdapter: WebSocketListener) {
+        self.webSocketListener = webSocketAdapter
     }
     
     // Function that start everything related with WebRTC use
     func start() {
         peerConnectionFactory = RTCPeerConnectionFactory()
         videoGrabber = createVideoGrabber()
-        var contraints: RTCMediaConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+        let contraints: RTCMediaConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
         
-        var videoSource = peerConnectionFactory?.videoSource()
-        localVideoTrack = peerConnectionFactory?.videoTrack(with: videoSource!, trackId: "100")
+        let videoSource = peerConnectionFactory!.videoSource()
+        localVideoTrack = peerConnectionFactory!.videoTrack(with: videoSource, trackId: "100")
         
-        var audioSource = peerConnectionFactory?.audioSource(with: contraints)
-        localAudioTrack = peerConnectionFactory?.audioTrack(with: audioSource!, trackId: "101")
+        let audioSource = peerConnectionFactory!.audioSource(with: contraints)
+        localAudioTrack = peerConnectionFactory!.audioTrack(with: audioSource, trackId: "101")
         
         if videoGrabber != nil {
             // videoGrabber.
@@ -47,7 +51,7 @@ class PeersManager {
             "OfferToReceiveAudio": "true",
             "OfferToReceiveVideo": "true"
         ]
-        var sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         createLocalPeerConnection(sdpConstraints: sdpConstraints)
     }
     
@@ -58,7 +62,7 @@ class PeersManager {
     }
     
     func createCameraGrabber() -> RTCVideoCapturer {
-        
+        return RTCVideoCapturer()
     }
     
     func createLocalPeerConnection(sdpConstraints: RTCMediaConstraints) {
@@ -70,12 +74,12 @@ class PeersManager {
         configuration!.bundlePolicy = .maxBundle
         configuration!.rtcpMuxPolicy = .require
         
-        let delegate = CustomPeerConnectionDelegate()
+        let delegate = localPeerConnectionDelegate(webSocketAdapter: webSocketListener!)
         localPeer = peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate)
     }
     
     func createLocalOffer(mediaConstraints: RTCMediaConstraints) {
-        localPeer?.offer(for: mediaConstraints, completionHandler: { (sessionDescription, error) in
+        localPeer!.offer(for: mediaConstraints, completionHandler: { (sessionDescription, error) in
             self.localPeer?.setLocalDescription(sessionDescription!, completionHandler: {(error) in ()})
             var localOfferParams: [String:String] = [:]
             localOfferParams["audioActive"] = "true"
@@ -100,16 +104,17 @@ class PeersManager {
             "OfferToReceiveAudio": "true",
             "OfferToReceiveVideo": "true"
         ]
-        var sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         
         configuration = RTCConfiguration()
         configuration!.iceServers = iceServers
         configuration!.bundlePolicy = .maxBundle
         configuration!.rtcpMuxPolicy = .require
         let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant)
-        var remotePeer: RTCPeerConnection = (peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate))!
-        // var mediaStream: RTCMediaStream = (peerConnectionFactory?.mediaStream(withStreamId: "105"))!
+        let remotePeer: RTCPeerConnection = (peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate))!
+        var mediaStream: RTCMediaStream = (peerConnectionFactory?.mediaStream(withStreamId: "105"))!
         // mediaStream.tra
+        remoteParticipant.peerConnection = remotePeer
     }
     
     func hangup() {
