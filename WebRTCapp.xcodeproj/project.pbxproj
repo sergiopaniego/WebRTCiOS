@@ -107,6 +107,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C00023AE20BFF63A00AA26B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C0FF5F072056C9B20035315C /* ViewController.swift */,
+				C079BB9E20BFEC190026C538 /* VideosViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C0CD3F8520BC3E950039C77F /* PeerConnection */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,9 +149,9 @@
 		C0FF5F042056C9B20035315C /* WebRTCapp */ = {
 			isa = PBXGroup;
 			children = (
+				C00023AE20BFF63A00AA26B4 /* Views */,
 				C0CD3F8520BC3E950039C77F /* PeerConnection */,
 				C0FF5F052056C9B20035315C /* AppDelegate.swift */,
-				C0FF5F072056C9B20035315C /* ViewController.swift */,
 				C0FF5F092056C9B20035315C /* Main.storyboard */,
 				C0FF5F0C2056C9B20035315C /* Assets.xcassets */,
 				C0FF5F0E2056C9B20035315C /* LaunchScreen.storyboard */,
@@ -152,7 +161,6 @@
 				C0AD528420B60E0F00354475 /* JSONConstants.swift */,
 				C0AD528620B60E2A00354475 /* PeersManager.swift */,
 				C0AD528820B60E4400354475 /* CustomSdpObserver.swift */,
-				C079BB9E20BFEC190026C538 /* VideosViewController.swift */,
 			);
 			path = WebRTCapp;
 			sourceTree = "<group>";
