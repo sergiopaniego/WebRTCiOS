@@ -18,8 +18,15 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Recognise gesture to hide keyboard
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         print("Did Load")
-        // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true;
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +45,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startSocket(_ sender: UIButton) {
+        if url.text?.isEmpty ?? true {
+            print(url.text!)
+        } else {
+            print("Default url")
+        }
         print("Start new View!")
     }
 }
