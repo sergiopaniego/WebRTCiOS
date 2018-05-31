@@ -55,100 +55,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startSocket(_ sender: UIButton) {
-        let url = URL(string: "https://demos.openvidu.io:8443/api/sessions")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "POST"
-        let json = "{\"customSessionId\": \"SessionA\"}"
-        request.httpBody = json.data(using: .utf8)
-        var responseString = ""
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(String(describing: error))")
-                return
-            }
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-            }
-            responseString = String(data: data, encoding: .utf8)!
-            print(responseString)
-        
-            let jsonData = responseString.data(using: .utf8)!
-            var sessionId = ""
-            do {
-                let json = try JSONSerialization.jsonObject(with: jsonData, options : .allowFragments) as? Dictionary<String,Any>
-                sessionId = json!["id"] as! String
-            } catch let error as NSError {
-                print(error)
-            }
-            // Get Token
-            let url = URL(string: "https://demos.openvidu.io:8443/api/tokens")!
-            var request = URLRequest(url: url)
-            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
-            request.httpMethod = "POST"
-            let json = "{\"session\": \"" + sessionId + "\"}"
-            request.httpBody = json.data(using: .utf8)
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                    print("error=\(String(describing: error))")
-                    return
-                }
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response = \(String(describing: response))")
-                }
-                
-                let responseString = String(data: data, encoding: .utf8)
-                print("responseString = \(String(describing: responseString))")
-                let jsonData = responseString?.data(using: .utf8)!
-                var token: String = ""
-                do {
-                    let jsonArray = try JSONSerialization.jsonObject(with: jsonData!, options : .allowFragments) as? Dictionary<String,Any>
-                    token = jsonArray!["token"] as! String
-                } catch let error as NSError {
-                    print(error)
-                }
-                self.createSocket(token: token)
-
-                DispatchQueue.main.async {
-                    self.createLocalVideoView()
-                }
-            }
-            task.resume()
-        }
-        task.resume()
+        print("HEY")
     }
     
     func createSocket(token: String) {
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
-        var sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         self.self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionA", participantName: "Participant1", peersManager: self.peersManager!, token: token)
         self.peersManager?.webSocketListener = self.socket
         self.peersManager?.start()
-        
-        // self.mediaStream = (self.peersManager?.peerConnectionFactory?.mediaStream(withStreamId: "102"))!
-        // self.localAudioTrack = self.peersManager?.peerConnectionFactory?.audioTrack(withTrackId: "101")
-        // sdpConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        // self.videoSource = self.peersManager?.peerConnectionFactory?.avFoundationVideoSource(with: sdpConstraints)
-        // self.videoSource?.captureSession.startRunning()
-        // videoSource.adaptOutputFormat(toWidth: 640, height: 480, fps: 15)
-        // self.captureSession = self.videoSource!.captureSession
-        // self.localVideoTrack = self.peersManager?.peerConnectionFactory?.videoTrack(with: self.self.videoSource!, trackId: "100")
-        // self.mediaStream!.addAudioTrack(self.self.localAudioTrack!)
-        // self.mediaStream!.addVideoTrack(self.localVideoTrack!)
-        // self.mediaStream!.audioTracks[0].isEnabled = true
-        // self.mediaStream!.videoTracks[0].isEnabled = true
-        
-        /*do{
-         try self.audioSession.setCategory(AVAudioSessionCategoryPlayback)
-         try self.self.audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
-         try self.audioSession.setActive(true)
-         } catch let error as NSError{
-         print(error.localizedDescription)
-         }*/
         
         self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
         // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
@@ -171,8 +86,6 @@ class ViewController: UIViewController {
         }
         
         if (device != nil) {
-            // let capturer = RTCVideoCapturer(delegate: device.localizedName as! RTCVideoCapturerDelegate)
-            
             let videoSource = self.peersManager?.peerConnectionFactory?.videoSource()
             let localVideoTrack = self.peersManager?.peerConnectionFactory?.videoTrack(with: videoSource!, trackId: "100")
             let audioSource = self.peersManager?.peerConnectionFactory?.audioSource(with: RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil))

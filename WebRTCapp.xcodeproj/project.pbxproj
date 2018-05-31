@@ -14,6 +14,7 @@
 		C02234D020B73A04009F01DC /* CustomPeerConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02234CF20B73A04009F01DC /* CustomPeerConnectionDelegate.swift */; };
 		C02234D220B74056009F01DC /* localPeerConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02234D120B74056009F01DC /* localPeerConnectionDelegate.swift */; };
 		C028D735207A676B000943F2 /* Pods_WebRTCapp.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C079BB9F20BFEC190026C538 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C079BB9E20BFEC190026C538 /* VideosViewController.swift */; };
 		C0AD528520B60E0F00354475 /* JSONConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528420B60E0F00354475 /* JSONConstants.swift */; };
 		C0AD528720B60E2A00354475 /* PeersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528620B60E2A00354475 /* PeersManager.swift */; };
 		C0AD528920B60E4400354475 /* CustomSdpObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528820B60E4400354475 /* CustomSdpObserver.swift */; };
@@ -58,6 +59,7 @@
 		C01121CD20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = remotePeerConnectionDelegate.swift; sourceTree = "<group>"; };
 		C02234CF20B73A04009F01DC /* CustomPeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPeerConnectionDelegate.swift; sourceTree = "<group>"; };
 		C02234D120B74056009F01DC /* localPeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = localPeerConnectionDelegate.swift; sourceTree = "<group>"; };
+		C079BB9E20BFEC190026C538 /* VideosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		C0AD528420B60E0F00354475 /* JSONConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONConstants.swift; sourceTree = "<group>"; };
 		C0AD528620B60E2A00354475 /* PeersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersManager.swift; sourceTree = "<group>"; };
 		C0AD528820B60E4400354475 /* CustomSdpObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSdpObserver.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				C0AD528420B60E0F00354475 /* JSONConstants.swift */,
 				C0AD528620B60E2A00354475 /* PeersManager.swift */,
 				C0AD528820B60E4400354475 /* CustomSdpObserver.swift */,
+				C079BB9E20BFEC190026C538 /* VideosViewController.swift */,
 			);
 			path = WebRTCapp;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 			files = (
 				C0FF5F082056C9B20035315C /* ViewController.swift in Sources */,
 				C0FD5A8E207A342800371BD5 /* RemoteParticipant.swift in Sources */,
+				C079BB9F20BFEC190026C538 /* VideosViewController.swift in Sources */,
 				C0AD528520B60E0F00354475 /* JSONConstants.swift in Sources */,
 				C02234D020B73A04009F01DC /* CustomPeerConnectionDelegate.swift in Sources */,
 				C0AD528720B60E2A00354475 /* PeersManager.swift in Sources */,
