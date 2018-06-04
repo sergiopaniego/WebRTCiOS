@@ -17,6 +17,7 @@ class RemoteParticipant {
     var peerConnection: RTCPeerConnection?
     var audioTrack: RTCAudioTrack?
     var videoTrack: RTCVideoTrack?
+    var view: UIView?
     /*var videoView: RTCSurfaceViewRenderer
     var view: View
     var participantNameText: TextField*/

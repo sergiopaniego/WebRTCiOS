@@ -34,6 +34,7 @@ class WebSocketListener: WebSocketDelegate {
         self.sessionName = sessionName
         self.participantName = participantName
         self.peersManager = peersManager
+        self.localPeer = self.peersManager.localPeer
         self.iceCandidatesParams = []
         self.token = token
         self.participants = [String: RemoteParticipant]()
@@ -127,12 +128,13 @@ class WebSocketListener: WebSocketDelegate {
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
             remoteParticipant.peerConnection!.offer(for: sdpConstraints, completionHandler: {(sessionDescription, error) in
-                self.participants[remoteParticipant.id!]?.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
-                    print("Local Descriptcion set")
+                print("Offer error: " + error.debugDescription)
+                self.participants[remoteParticipant.id!]!.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
+                    print("Local Descriptcion set " + error.debugDescription)
                 })
                 print("Session Description: " + sessionDescription!.sdp)
                 var remoteOfferParams: [String:String] = [:]
-                remoteOfferParams["sdpOffer"] = sessionDescription?.description
+                remoteOfferParams["sdpOffer"] = sessionDescription!.description
                 remoteOfferParams["sender"] = self.remoteParticipantId! + "_CAMERA"
                 self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
             })
@@ -150,10 +152,13 @@ class WebSocketListener: WebSocketDelegate {
     
     func saveAnwer(json: [String:Any]) {
         let sessionDescription = RTCSessionDescription(type: RTCSdpType.answer, sdp: json["sdpAnswer"] as! String)
-        if (localPeer?.remoteDescription != nil) {
-            participants[remoteParticipantId!]?.peerConnection?.setRemoteDescription(sessionDescription)
+        if localPeer == nil {
+            self.localPeer = self.peersManager.localPeer
+        }
+        if (localPeer!.remoteDescription != nil) {
+            participants[remoteParticipantId!]!.peerConnection!.setRemoteDescription(sessionDescription)
         } else {
-            localPeer?.setRemoteDescription(sessionDescription)
+            localPeer!.setRemoteDescription(sessionDescription)
         }
     }
     
@@ -213,8 +218,8 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipantPublished: RemoteParticipant = participants[remoteParticipantId!]!
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
         let optionalConstraints = [ "DtlsSrtpKeyAgreement": "true", "RtpDataChannels" : "true", "internalSctpDataChannels" : "true"]
-        remoteParticipantPublished.peerConnection?.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (sessionDescription, error) in
-            remoteParticipantPublished.peerConnection?.setLocalDescription(sessionDescription!, completionHandler: {(error) in
+        remoteParticipantPublished.peerConnection!.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (sessionDescription, error) in
+            remoteParticipantPublished.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
                 print("Local Descriptcion set")
             })
             var remoteOfferParams:  [String: String] = [:]
@@ -226,7 +231,7 @@ class WebSocketListener: WebSocketDelegate {
     
     func participantLeft(params: Dictionary<String, Any>) {
         let participantId = params["name"] as! String
-        participants[participantId]?.peerConnection?.close()
+        participants[participantId]!.peerConnection!.close()
         //REMOVE VIEW
         participants.removeValue(forKey: participantId)
     }
@@ -234,9 +239,9 @@ class WebSocketListener: WebSocketDelegate {
     func saveIceCandidate(json: Dictionary<String, Any>, endPointName: String?) {
         let iceCandidate = RTCIceCandidate(sdp: json["sdpMid"] as! String, sdpMLineIndex: json["sdpMLineIndex"] as! Int32, sdpMid: json["candidate"] as? String)
         if (endPointName == nil) {
-            localPeer?.add(iceCandidate)
+            self.localPeer!.add(iceCandidate)
         } else {
-            participants[endPointName!]?.peerConnection?.add(iceCandidate)
+            participants[endPointName!]!.peerConnection!.add(iceCandidate)
         }
     }
     
@@ -259,7 +264,7 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func addIceCandidate(iceCandidateParams: [String: String]) {
-        iceCandidatesParams?.append(iceCandidateParams)
+        iceCandidatesParams!.append(iceCandidateParams)
     }
     
 }

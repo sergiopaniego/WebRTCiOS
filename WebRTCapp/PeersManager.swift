@@ -22,8 +22,10 @@ class PeersManager {
     var localAudioTrack: RTCAudioTrack?
     var videoGrabber: RTCVideoCapturer?
     var peerConnection: RTCPeerConnection?
+    var view: UIView!
     
-    init() {
+    init(view: UIView) {
+        self.view = view
     }
     
     func setWebSocketAdapter(webSocketAdapter: WebSocketListener) {
@@ -68,23 +70,23 @@ class PeersManager {
         configuration!.rtcpMuxPolicy = .require
         
         let delegate = localPeerConnectionDelegate(webSocketAdapter: webSocketListener!)
-        localPeer = peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate)
+        localPeer = peerConnectionFactory!.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate)
     }
     
     func createLocalOffer(mediaConstraints: RTCMediaConstraints) {
         localPeer!.offer(for: mediaConstraints, completionHandler: { (sessionDescription, error) in
-            self.localPeer?.setLocalDescription(sessionDescription!, completionHandler: {(error) in ()})
+            self.localPeer!.setLocalDescription(sessionDescription!, completionHandler: {(error) in ()})
             var localOfferParams: [String:String] = [:]
             localOfferParams["audioActive"] = "true"
             localOfferParams["videoActive"] = "true"
             localOfferParams["doLoopback"] = "false"
             localOfferParams["frameRate"] = "30"
             localOfferParams["typeOfVideo"] = "CAMERA"
-            localOfferParams["sdpOffer"] = sessionDescription?.description
-            if (self.webSocketListener?.id)! > 1 {
-                self.webSocketListener?.sendJson(method: "publishVideo", params: localOfferParams)
+            localOfferParams["sdpOffer"] = sessionDescription!.description
+            if (self.webSocketListener!.id) > 1 {
+                self.webSocketListener!.sendJson(method: "publishVideo", params: localOfferParams)
             } else {
-                self.webSocketListener?.localOfferParams = localOfferParams
+                self.webSocketListener!.localOfferParams = localOfferParams
             }
         })
     }
@@ -101,23 +103,21 @@ class PeersManager {
         
         configuration = RTCConfiguration()
         configuration!.iceServers = iceServers
-        configuration!.bundlePolicy = .maxBundle
+        configuration!.bundlePolicy = .balanced
         configuration!.rtcpMuxPolicy = .require
-        let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant)
+        let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant, view: view)
         let remotePeer: RTCPeerConnection = (peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate))!
-        // var mediaStream: RTCMediaStream = (peerConnectionFactory?.mediaStream(withStreamId: "105"))!
-        // mediaStream.tra
         remoteParticipant.peerConnection = remotePeer
     }
     
     func hangup() {
         if webSocketListener != nil && localPeer != nil {
-            webSocketListener?.sendJson(method: "leaveRoom", params: [:])
-            webSocket?.disconnect()
-            localPeer?.close()
-            var participants = webSocketListener?.participants
-            for remoteParticipant in (participants?.values)! {
-                remoteParticipant.peerConnection?.close()
+            webSocketListener!.sendJson(method: "leaveRoom", params: [:])
+            webSocket!.disconnect()
+            localPeer!.close()
+            var participants = webSocketListener!.participants
+            for remoteParticipant in (participants.values) {
+                remoteParticipant.peerConnection!.close()
                 // views_container.removeVie(remoteParticipant.view)
             }
         }

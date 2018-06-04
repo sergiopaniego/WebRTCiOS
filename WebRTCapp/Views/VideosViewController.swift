@@ -43,7 +43,7 @@ class VideosViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("Did Appear")
-        self.peersManager = PeersManager()
+        self.peersManager = PeersManager(view: self.view)
         start()
     }
     
@@ -128,9 +128,10 @@ class VideosViewController: UIViewController {
     func createSocket(token: String) {
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
         let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
-        self.self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionA", participantName: "Participant1", peersManager: self.peersManager!, token: token)
-        self.peersManager?.webSocketListener = self.socket
-        self.peersManager?.start()
+        self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionA", participantName: "Participant1", peersManager: self.peersManager!, token: token)
+        self.peersManager!.webSocketListener = self.socket
+        self.peersManager!.start()
+        
         
         self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
         // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
