@@ -21,6 +21,14 @@ class ViewController: UIViewController {
 
         // Recognise gesture to hide keyboard
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        //Camera
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            if response {
+                print("Camera permission granted!")
+            } else {
+                
+            }
+        }
         print("Did Load")
     }
 
@@ -45,11 +53,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startSocket(_ sender: UIButton) {
-        if url.text?.isEmpty ?? true {
+        /*if url.text?.isEmpty ?? true {
             print(url.text!)
         } else {
             print("Default url")
-        }
+        }*/
         print("Start new View!")
     }
 }

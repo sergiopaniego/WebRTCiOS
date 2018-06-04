@@ -21,6 +21,7 @@ class PeersManager {
     var localVideoTrack: RTCVideoTrack?
     var localAudioTrack: RTCAudioTrack?
     var videoGrabber: RTCVideoCapturer?
+    var peerConnection: RTCPeerConnection?
     
     init() {
     }
@@ -31,22 +32,14 @@ class PeersManager {
     
     // Function that start everything related with WebRTC use
     func start() {
-        peerConnectionFactory = RTCPeerConnectionFactory()
-        videoGrabber = createVideoGrabber()
-        let contraints: RTCMediaConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+        let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
+        let videoDecoderFactory = RTCDefaultVideoDecoderFactory()
+        peerConnectionFactory = RTCPeerConnectionFactory(encoderFactory: videoEncoderFactory, decoderFactory: videoDecoderFactory)
         
-        let videoSource = peerConnectionFactory!.videoSource()
-        localVideoTrack = peerConnectionFactory!.videoTrack(with: videoSource, trackId: "100")
-        
-        let audioSource = peerConnectionFactory!.audioSource(with: contraints)
-        localAudioTrack = peerConnectionFactory!.audioTrack(with: audioSource, trackId: "101")
-        
-        if videoGrabber != nil {
-            // videoGrabber.
-        }
-        
-        // var localRenderer = RTCVideoRenderer()
-        // localVideoTrack?.add(localRenderer)
+        let config = RTCConfiguration()
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        self.peerConnection = peerConnectionFactory!.peerConnection(with: config, constraints: RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil), delegate: nil)
+
         let mandatoryConstraints = [
             "OfferToReceiveAudio": "true",
             "OfferToReceiveVideo": "true"
@@ -112,7 +105,7 @@ class PeersManager {
         configuration!.rtcpMuxPolicy = .require
         let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant)
         let remotePeer: RTCPeerConnection = (peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate))!
-        var mediaStream: RTCMediaStream = (peerConnectionFactory?.mediaStream(withStreamId: "105"))!
+        // var mediaStream: RTCMediaStream = (peerConnectionFactory?.mediaStream(withStreamId: "105"))!
         // mediaStream.tra
         remoteParticipant.peerConnection = remotePeer
     }

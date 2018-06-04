@@ -22,7 +22,7 @@
                                 <rect key="frame" x="150" y="536" width="75" height="30"/>
                                 <color key="backgroundColor" red="0.078431372549019607" green="0.52941176470588236" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="0hL-5x-MTm"/>
+                                    <constraint firstAttribute="height" constant="30" id="0hL-5x-MTm" userLabel="height = 50"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Start">
@@ -98,13 +98,23 @@
                     <view key="view" contentMode="scaleToFill" id="6jS-uv-7FS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0cg-iV-E81">
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="3p0-0t-8VP"/>
                     </view>
+                    <connections>
+                        <outlet property="localVideoView" destination="0cg-iV-E81" id="mqs-Xo-ew6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fwI-dC-Nlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1042" y="135"/>
+            <point key="canvasLocation" x="1040.2877697841727" y="134.35251798561151"/>
         </scene>
     </scenes>
 </document>
