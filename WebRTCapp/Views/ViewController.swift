@@ -52,12 +52,19 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is VideosViewController
+        {
+            let vc = segue.destination as? VideosViewController
+            vc?.url = url.text!
+            vc?.sessionName = sessionName.text!
+            vc?.participantName = participantName.text!
+        }
+    }
+    
+
     @IBAction func startSocket(_ sender: UIButton) {
-        /*if url.text?.isEmpty ?? true {
-            print(url.text!)
-        } else {
-            print("Default url")
-        }*/
         print("Start new View!")
     }
 }

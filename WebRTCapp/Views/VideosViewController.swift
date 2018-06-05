@@ -26,12 +26,18 @@ class VideosViewController: UIViewController {
     private var audioSession = AVAudioSession.sharedInstance()
     var renderer: RTCMTLVideoView!
     private var videoCapturer: RTCVideoCapturer?
+    var url: String = ""
+    var sessionName: String = ""
+    var participantName: String = ""
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteVideoView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Did Load")
+        print("URL came : " + url)
+        print("Session Name: " + sessionName)
+        print("Participant: " + participantName)
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -129,13 +135,9 @@ class VideosViewController: UIViewController {
     }
     
     func createSocket(token: String) {
-        self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionB", participantName: "Participant1", peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
+        self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
-        
-        
-        // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
-        
     }
     
     func createLocalVideoView() {
