@@ -118,6 +118,9 @@ class VideosViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     self.createLocalVideoView()
+                    let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+                    let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+                    self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
                 }
             }
             task.resume()
@@ -126,14 +129,11 @@ class VideosViewController: UIViewController {
     }
     
     func createSocket(token: String) {
-        let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
-        let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionB", participantName: "Participant1", peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
         
         
-        self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
         // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
         
     }
@@ -181,8 +181,8 @@ class VideosViewController: UIViewController {
         let stream = self.peersManager!.peerConnectionFactory!.mediaStream(withStreamId: streamId)
         
         // Audio
-        let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
-        let audioConstrains = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        // let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+        let audioConstrains = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
         let audioSource = self.peersManager!.peerConnectionFactory!.audioSource(with: audioConstrains)
         let audioTrack = self.peersManager!.peerConnectionFactory!.audioTrack(with: audioSource, trackId: "audio0")
         stream.addAudioTrack(audioTrack)
