@@ -245,7 +245,7 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func saveIceCandidate(json: Dictionary<String, Any>, endPointName: String?) {
-        let iceCandidate = RTCIceCandidate(sdp: json["sdpMid"] as! String, sdpMLineIndex: json["sdpMLineIndex"] as! Int32, sdpMid: json["candidate"] as? String)
+        let iceCandidate = RTCIceCandidate(sdp: json["candidate"] as! String, sdpMLineIndex: json["sdpMLineIndex"] as! Int32, sdpMid: json["sdpMid"] as? String)
         if (endPointName == nil) {
             self.localPeer!.add(iceCandidate)
         } else {

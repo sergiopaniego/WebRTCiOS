@@ -168,7 +168,7 @@ extension PeersManager: RTCPeerConnectionDelegate {
             iceCandidateParams["sdpMid"] = candidate.sdpMid
             iceCandidateParams["sdpMLineIndex"] = String(candidate.sdpMLineIndex)
             iceCandidateParams["candidate"] = String(candidate.sdp)
-            iceCandidateParams["endpointName"] =  "remoteParticipant.id"
+            iceCandidateParams["endpointName"] =  self.remoteParticipant!.id
             self.webSocketListener!.sendJson(method: "onIceCandidate", params: iceCandidateParams)
             print("NEW remote ice candidate")
         }
