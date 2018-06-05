@@ -200,12 +200,14 @@ class VideosViewController: UIViewController {
     func embedView(_ view: UIView, into containerView: UIView) {
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(500)]",
+        let width = (UIScreen.main.bounds.width)
+        let height = (UIScreen.main.bounds.height / 2)
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
                                                                     options: NSLayoutFormatOptions.alignAllCenterY,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(500)]",
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
                                                                     options:NSLayoutFormatOptions.alignAllCenterX,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
