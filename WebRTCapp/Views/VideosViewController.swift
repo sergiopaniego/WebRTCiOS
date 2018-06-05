@@ -25,9 +25,9 @@ class VideosViewController: UIViewController {
     private var captureSession: AVCaptureSession?
     private var audioSession = AVAudioSession.sharedInstance()
     var renderer: RTCMTLVideoView!
-    var peerConnection: RTCPeerConnection?
     private var videoCapturer: RTCVideoCapturer?
     @IBOutlet weak var localVideoView: UIView!
+    @IBOutlet weak var remoteVideoView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,7 @@ class VideosViewController: UIViewController {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
         request.httpMethod = "POST"
-        let json = "{\"customSessionId\": \"SessionA\"}"
+        let json = "{\"customSessionId\": \"SessionB\"}"
         request.httpBody = json.data(using: .utf8)
         var responseString = ""
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -109,7 +109,7 @@ class VideosViewController: UIViewController {
                         print("response someKey exists")
                         token = jsonArray?["token"] as! String
                     } else {
-                        token = "gr50nzaqe6avt65cg5v06"
+                        token = "wss://demos.openvidu.io:8443?sessionId=SessionB&token=6m6xfsbfvme5rhek"
                     }
                 } catch let error as NSError {
                     print(error)
@@ -128,7 +128,7 @@ class VideosViewController: UIViewController {
     func createSocket(token: String) {
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
         let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
-        self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionA", participantName: "Participant1", peersManager: self.peersManager!, token: token)
+        self.socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: "SessionB", participantName: "Participant1", peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
         
@@ -137,33 +137,6 @@ class VideosViewController: UIViewController {
         // socket = WebSocketListener(url: "wss://demos.openvidu.io:8443/openvidu", sessionName: sessionName.text as! String, participantName: participantName.text as! String)
         
     }
-    
-    private func createMediaSenders() {
-        let streamId = "stream"
-        let stream = self.peersManager!.peerConnectionFactory!.mediaStream(withStreamId: streamId)
-                self.peerConnection = self.peersManager!.peerConnectionFactory!.peerConnection(with: RTCConfiguration(), constraints: RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil), delegate: nil)
-        
-        // Audio
-        let audioConstrains = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
-        let audioSource = self.peersManager!.peerConnectionFactory!.audioSource(with: audioConstrains)
-        let audioTrack = self.peersManager!.peerConnectionFactory!.audioTrack(with: audioSource, trackId: "audio0")
-        stream.addAudioTrack(audioTrack)
-        
-        // Video
-        let videoSource = self.peersManager!.peerConnectionFactory!.videoSource()
-        if TARGET_OS_SIMULATOR != 0 {
-            self.videoCapturer = RTCFileVideoCapturer(delegate: videoSource)
-        }
-        else {
-            self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
-        }
-        let videoTrack = self.peersManager!.peerConnectionFactory!.videoTrack(with: videoSource, trackId: "video0")
-        stream.addVideoTrack(videoTrack)
-        
-        // Add our stream to the WebRTC client
-        self.peerConnection!.add(stream)
-    }
-    
     
     func createLocalVideoView() {
         self.renderer = RTCMTLVideoView(frame: self.localVideoView.frame)
@@ -175,12 +148,11 @@ class VideosViewController: UIViewController {
     func startCapureLocalVideo(renderer: RTCVideoRenderer) {
         createMediaSenders()
         
-        guard let stream = self.peerConnection!.localStreams.first ,
+        guard let stream = self.peersManager!.localPeer!.localStreams.first ,
             let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
                 return
         }
 
-        
         guard
             let frontCamera = (RTCCameraVideoCapturer.captureDevices().first { $0.position == .front }),
             
@@ -204,16 +176,37 @@ class VideosViewController: UIViewController {
         stream.videoTracks.first?.add(renderer)
     }
     
+    private func createMediaSenders() {
+        let streamId = "stream"
+        let stream = self.peersManager!.peerConnectionFactory!.mediaStream(withStreamId: streamId)
+        
+        // Audio
+        let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+        let audioConstrains = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        let audioSource = self.peersManager!.peerConnectionFactory!.audioSource(with: audioConstrains)
+        let audioTrack = self.peersManager!.peerConnectionFactory!.audioTrack(with: audioSource, trackId: "audio0")
+        stream.addAudioTrack(audioTrack)
+        
+        // Video
+        let videoSource = self.peersManager!.peerConnectionFactory!.videoSource()
+        self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
+        let videoTrack = self.peersManager!.peerConnectionFactory!.videoTrack(with: videoSource, trackId: "video0")
+        stream.addVideoTrack(videoTrack)
+        
+        self.peersManager!.localPeer!.add(stream)
+        self.peersManager!.localPeer!.delegate = self.peersManager!
+    }
+    
     func embedView(_ view: UIView, into containerView: UIView) {
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|",
-                                                                    options: [],
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(500)]",
+                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|",
-                                                                    options: [],
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(500)]",
+                                                                    options:NSLayoutFormatOptions.alignAllCenterX,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         containerView.layoutIfNeeded()

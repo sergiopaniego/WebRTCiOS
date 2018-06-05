@@ -100,7 +100,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0cg-iV-E81">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="335"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
+                                <rect key="frame" x="0.0" y="334" width="375" height="333"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -110,11 +115,12 @@
                     </view>
                     <connections>
                         <outlet property="localVideoView" destination="0cg-iV-E81" id="mqs-Xo-ew6"/>
+                        <outlet property="remoteVideoView" destination="SAC-Vl-Tq3" id="ybG-e7-e5a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fwI-dC-Nlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1040.2877697841727" y="134.35251798561151"/>
+            <point key="canvasLocation" x="1039.2" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>

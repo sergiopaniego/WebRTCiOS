@@ -28,8 +28,10 @@ class WebSocketListener: WebSocketDelegate {
     var localPeer: RTCPeerConnection?
     var peersManager: PeersManager
     var token: String
+    private var videoCapturer: RTCVideoCapturer?
+    var remoteVideoView: UIView!
     
-    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String) {
+    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, view: UIView) {
         self.url = url
         self.sessionName = sessionName
         self.participantName = participantName
@@ -38,6 +40,7 @@ class WebSocketListener: WebSocketDelegate {
         self.iceCandidatesParams = []
         self.token = token
         self.participants = [String: RemoteParticipant]()
+        self.remoteVideoView = view
         socket = WebSocket(url: URL(string: url)!)
         socket.disableSSLCertValidation = useSSL
         socket.delegate = self
@@ -48,7 +51,7 @@ class WebSocketListener: WebSocketDelegate {
         print("Connected")
         pingMessageHandler()
         var joinRoomParams: [String: String] = [:]
-        joinRoomParams["dataChannels"] = "false"
+        joinRoomParams["recorder"] = "false"
         joinRoomParams[JSONConstants.Metadata] = "{\"clientData\": \"" + participantName + "\"}"
         joinRoomParams["secret"] = "MY_SECRET"
         joinRoomParams["session"] = sessionName
@@ -60,13 +63,13 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func pingMessageHandler() {
-        helloWorldTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(WebSocketListener.doPing), userInfo: nil, repeats: true)
+        helloWorldTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(WebSocketListener.doPing), userInfo: nil, repeats: true)
         doPing()
     }
     
     @objc func doPing() {
         var pingParams: [String: String] = [:]
-        pingParams["interval"] = "3000"
+        pingParams["interval"] = "5000"
         sendJson(method: "ping", params: pingParams)
         socket.write(ping: Data())
     }
@@ -99,14 +102,16 @@ class WebSocketListener: WebSocketDelegate {
         if result[JSONConstants.SdpAnswer] != nil {
             saveAnwer(json: result)
         } else if result[JSONConstants.SessionId] != nil {
-            let value = result[JSONConstants.Value]  as! [[String:Any]]
-            if !value.isEmpty {
-                addParticipantsAlreadyInRoom(result: result)
-             }
-            self.userId = result[JSONConstants.Id] as? String
-            for var iceCandidate in iceCandidatesParams! {
-                iceCandidate["endpointName"] = self.userId
-                sendJson(method: "onIceCandidate",params:  iceCandidate)
+            if result[JSONConstants.Value] != nil {
+                let value = result[JSONConstants.Value]  as! [[String:Any]]
+                if !value.isEmpty {
+                    addParticipantsAlreadyInRoom(result: result)
+                }
+                self.userId = result[JSONConstants.Id] as? String
+                for var iceCandidate in iceCandidatesParams! {
+                    iceCandidate["endpointName"] = self.userId
+                    sendJson(method: "onIceCandidate", params:  iceCandidate)
+                }
             }
         } else if result[JSONConstants.Value] != nil {
             print("pong")
@@ -123,26 +128,24 @@ class WebSocketListener: WebSocketDelegate {
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
             participants[remoteParticipant.id!] = remoteParticipant
-            createVideoView(remoteParticipant: remoteParticipant);
             setRemoteParticipantName(name: participant[JSONConstants.Metadata]! as! String, participant: remoteParticipant)
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
-            let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
+            createVideoView(remoteParticipant: remoteParticipant)
+            let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+            let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
             remoteParticipant.peerConnection!.offer(for: sdpConstraints, completionHandler: {(sessionDescription, error) in
-                print("Offer error: " + error.debugDescription)
+                print("Remote Offer: " + error.debugDescription)
                 self.participants[remoteParticipant.id!]!.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
-                    print("Local Descriptcion set " + error.debugDescription)
+                    print("Remote Local Description set " + error.debugDescription)
                 })
-                print("Session Description: " + sessionDescription!.sdp)
                 var remoteOfferParams: [String:String] = [:]
-                remoteOfferParams["sdpOffer"] = sessionDescription!.description
+                remoteOfferParams["sdpOffer"] = sessionDescription!.sdp
                 remoteOfferParams["sender"] = self.remoteParticipantId! + "_CAMERA"
                 self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
+                // let delegate = remotePeerConnectionDelegate(webSocketAdapter: self.peersManager.webSocketListener!, remoteParticipant: remoteParticipant)
+                // self.participants[remoteParticipant.id!]?.peerConnection?.delegate = delegate
             })
         }
-    }
-    
-    func createVideoView(remoteParticipant: RemoteParticipant) {
-        // Creates video view in main view
     }
     
     func setRemoteParticipantName(name: String, participant: RemoteParticipant) {
@@ -156,9 +159,13 @@ class WebSocketListener: WebSocketDelegate {
             self.localPeer = self.peersManager.localPeer
         }
         if (localPeer!.remoteDescription != nil) {
-            participants[remoteParticipantId!]!.peerConnection!.setRemoteDescription(sessionDescription)
+            participants[remoteParticipantId!]!.peerConnection!.setRemoteDescription(sessionDescription, completionHandler: {(error) in
+                print("Remote Peer Remote Description set: " + error.debugDescription)
+            })
         } else {
-            localPeer!.setRemoteDescription(sessionDescription)
+            localPeer!.setRemoteDescription(sessionDescription, completionHandler: {(error) in
+                print("Local Peer Remote Description set: " + error.debugDescription)
+            })
         }
     }
     
@@ -196,7 +203,7 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipant = RemoteParticipant()
         remoteParticipant.id = params[JSONConstants.Id] as? String
         participants[params[JSONConstants.Id] as! String] = remoteParticipant
-        createVideoView(remoteParticipant: remoteParticipant)
+        
         let metadataString = params[JSONConstants.Metadata] as! String
         let data = metadataString.data(using: .utf8)!
         do {
@@ -204,6 +211,7 @@ class WebSocketListener: WebSocketDelegate {
             {
                 setRemoteParticipantName(name: metadata["clientData"]! as! String, participant: remoteParticipant)
                 self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
+                createVideoView(remoteParticipant: remoteParticipant)
             } else {
                 print("bad json")
             }
@@ -215,12 +223,12 @@ class WebSocketListener: WebSocketDelegate {
     func participantPublished(params: Dictionary<String, Any>) {
         remoteParticipantId = params[JSONConstants.Id] as? String
         print("ID: " + remoteParticipantId!)
-        let remoteParticipantPublished: RemoteParticipant = participants[remoteParticipantId!]!
+        let remoteParticipantPublished = participants[remoteParticipantId!]!
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
-        let optionalConstraints = [ "DtlsSrtpKeyAgreement": "true", "RtpDataChannels" : "true", "internalSctpDataChannels" : "true"]
-        remoteParticipantPublished.peerConnection!.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: optionalConstraints), completionHandler: { (sessionDescription, error) in
+        // let optionalConstraints = [ "DtlsSrtpKeyAgreement": "true", "RtpDataChannels" : "true", "internalSctpDataChannels" : "true"]
+        remoteParticipantPublished.peerConnection!.offer(for: RTCMediaConstraints.init(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil), completionHandler: { (sessionDescription, error) in
             remoteParticipantPublished.peerConnection!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
-                print("Local Descriptcion set")
+                print("Remote Peer Local Description set")
             })
             var remoteOfferParams:  [String: String] = [:]
             remoteOfferParams["sdpOffer"] = sessionDescription!.description
@@ -265,6 +273,80 @@ class WebSocketListener: WebSocketDelegate {
     
     func addIceCandidate(iceCandidateParams: [String: String]) {
         iceCandidatesParams!.append(iceCandidateParams)
+    }
+    
+    func createVideoView(remoteParticipant: RemoteParticipant) {
+        let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
+        startCapureLocalVideo(renderer: renderer)
+        
+        self.embedView(renderer, into: self.remoteVideoView)
+    }
+    func startCapureLocalVideo(renderer: RTCVideoRenderer) {
+        createMediaSenders()
+        
+        guard let stream = self.peersManager.remotePeer!.localStreams.first ,
+            let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
+                return
+        }
+        
+        guard
+            let frontCamera = (RTCCameraVideoCapturer.captureDevices().first { $0.position == .front }),
+            
+            // choose highest res
+            let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1, f2) -> Bool in
+                let width1 = CMVideoFormatDescriptionGetDimensions(f1.formatDescription).width
+                let width2 = CMVideoFormatDescriptionGetDimensions(f2.formatDescription).width
+                return width1 < width2
+            }).last,
+            
+            // choose highest fps
+            let fps = (format.videoSupportedFrameRateRanges.sorted { return $0.maxFrameRate < $1.maxFrameRate }.last) else {
+                return
+        }
+        
+        capturer.startCapture(with: frontCamera,
+                              format: format,
+                              fps: Int(fps.maxFrameRate))
+        
+        
+        stream.videoTracks.first?.add(renderer)
+    }
+    
+    private func createMediaSenders() {
+        let streamId = "stream2"
+        let stream = self.peersManager.peerConnectionFactory!.mediaStream(withStreamId: streamId)
+        
+        // Audio
+        let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+        let audioConstrains = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+        let audioSource = self.peersManager.peerConnectionFactory!.audioSource(with: audioConstrains)
+        let audioTrack = self.peersManager.peerConnectionFactory!.audioTrack(with: audioSource, trackId: "audio1")
+        stream.addAudioTrack(audioTrack)
+        
+        // Video
+        let videoSource = self.peersManager.peerConnectionFactory!.videoSource()
+        self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
+        let videoTrack = self.peersManager.peerConnectionFactory!.videoTrack(with: videoSource, trackId: "video1")
+        stream.addVideoTrack(videoTrack)
+        
+        self.peersManager.remotePeer!.add(stream)
+        self.peersManager.remotePeer!.delegate = self.peersManager
+        self.peersManager.remotePeer!.remove(stream)
+    }
+    
+    func embedView(_ view: UIView, into containerView: UIView) {
+        containerView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(300)]",
+                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
+                                                                    metrics: nil,
+                                                                    views: ["view":view]))
+        
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(300)]",
+                                                                    options:NSLayoutFormatOptions.alignAllCenterX,
+                                                                    metrics: nil,
+                                                                    views: ["view":view]))
+        containerView.layoutIfNeeded()
     }
     
 }

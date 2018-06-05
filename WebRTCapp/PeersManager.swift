@@ -10,19 +10,20 @@ import Foundation
 import WebRTC
 import Starscream
 
-class PeersManager {
+class PeersManager: NSObject {
     
     var localPeer: RTCPeerConnection?
+    var remotePeer: RTCPeerConnection?
     var peerConnectionFactory: RTCPeerConnectionFactory?
-    var configuration: RTCConfiguration?
     var connectionConstraints: RTCMediaConstraints?
     var webSocketListener: WebSocketListener?
     var webSocket: WebSocket?
     var localVideoTrack: RTCVideoTrack?
     var localAudioTrack: RTCAudioTrack?
-    var videoGrabber: RTCVideoCapturer?
     var peerConnection: RTCPeerConnection?
     var view: UIView!
+    private var remoteStream: RTCMediaStream?
+    var remoteParticipant: RemoteParticipant?
     
     init(view: UIView) {
         self.view = view
@@ -37,10 +38,6 @@ class PeersManager {
         let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
         let videoDecoderFactory = RTCDefaultVideoDecoderFactory()
         peerConnectionFactory = RTCPeerConnectionFactory(encoderFactory: videoEncoderFactory, decoderFactory: videoDecoderFactory)
-        
-        let config = RTCConfiguration()
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
-        self.peerConnection = peerConnectionFactory!.peerConnection(with: config, constraints: RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil), delegate: nil)
 
         let mandatoryConstraints = [
             "OfferToReceiveAudio": "true",
@@ -50,39 +47,27 @@ class PeersManager {
         createLocalPeerConnection(sdpConstraints: sdpConstraints)
     }
     
-    func createVideoGrabber() -> RTCVideoCapturer {
-        var videoCapturer: RTCVideoCapturer
-        videoCapturer = createCameraGrabber()
-        return videoCapturer
-    }
-    
-    func createCameraGrabber() -> RTCVideoCapturer {
-        return RTCVideoCapturer()
-    }
-    
     func createLocalPeerConnection(sdpConstraints: RTCMediaConstraints) {
-        var iceServers: [RTCIceServer] = []
-        let iceServer = RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])
-        iceServers.append(iceServer)
-        configuration = RTCConfiguration()
-        configuration!.iceServers = iceServers
-        configuration!.bundlePolicy = .maxBundle
-        configuration!.rtcpMuxPolicy = .require
-        
-        let delegate = localPeerConnectionDelegate(webSocketAdapter: webSocketListener!)
-        localPeer = peerConnectionFactory!.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate)
+        let config = RTCConfiguration()
+        config.bundlePolicy = .maxCompat
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        config.rtcpMuxPolicy = .require
+
+        localPeer = peerConnectionFactory!.peerConnection(with: config, constraints: sdpConstraints, delegate: nil)
     }
     
     func createLocalOffer(mediaConstraints: RTCMediaConstraints) {
         localPeer!.offer(for: mediaConstraints, completionHandler: { (sessionDescription, error) in
-            self.localPeer!.setLocalDescription(sessionDescription!, completionHandler: {(error) in ()})
+            self.localPeer!.setLocalDescription(sessionDescription!, completionHandler: {(error) in
+                print("Local Peer local Description set: " + error.debugDescription)
+            })
             var localOfferParams: [String:String] = [:]
             localOfferParams["audioActive"] = "true"
             localOfferParams["videoActive"] = "true"
             localOfferParams["doLoopback"] = "false"
             localOfferParams["frameRate"] = "30"
             localOfferParams["typeOfVideo"] = "CAMERA"
-            localOfferParams["sdpOffer"] = sessionDescription!.description
+            localOfferParams["sdpOffer"] = sessionDescription!.sdp
             if (self.webSocketListener!.id) > 1 {
                 self.webSocketListener!.sendJson(method: "publishVideo", params: localOfferParams)
             } else {
@@ -92,22 +77,20 @@ class PeersManager {
     }
     
     func createRemotePeerConnection(remoteParticipant: RemoteParticipant) {
-        var iceServers: [RTCIceServer] = []
-        let iceServer = RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])
-        iceServers.append(iceServer)
         let mandatoryConstraints = [
             "OfferToReceiveAudio": "true",
             "OfferToReceiveVideo": "true"
         ]
         let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
         
-        configuration = RTCConfiguration()
-        configuration!.iceServers = iceServers
-        configuration!.bundlePolicy = .balanced
-        configuration!.rtcpMuxPolicy = .require
-        let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant, view: view)
-        let remotePeer: RTCPeerConnection = (peerConnectionFactory?.peerConnection(with: configuration!, constraints: sdpConstraints, delegate: delegate))!
-        remoteParticipant.peerConnection = remotePeer
+        let config = RTCConfiguration()
+        config.bundlePolicy = .maxCompat
+        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        config.rtcpMuxPolicy = .require
+        // let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant/*, view: view*/)
+        self.remotePeer = (peerConnectionFactory?.peerConnection(with: config, constraints: sdpConstraints, delegate: nil))!
+        remoteParticipant.peerConnection = self.remotePeer
+        self.remoteParticipant = remoteParticipant
     }
     
     func hangup() {
@@ -118,7 +101,7 @@ class PeersManager {
             var participants = webSocketListener!.participants
             for remoteParticipant in (participants.values) {
                 remoteParticipant.peerConnection!.close()
-                // views_container.removeVie(remoteParticipant.view)
+                // views_container.removeView(remoteParticipant.view)
             }
         }
         /*if localVideoTrack != nil {
@@ -126,5 +109,76 @@ class PeersManager {
             localVideoView.clearImage()
             videoGrabber.dispose()
         }*/
+    }
+}
+
+extension PeersManager: RTCPeerConnectionDelegate {
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
+        print("peerConnection new signaling state: \(stateChanged)")
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
+        if peerConnection == self.localPeer {
+            self.remoteStream = stream
+            print("local peerConnection did add stream")
+        } else {
+            print("remote peerConnection did add stream")
+            let videoTrack = stream.videoTracks.first
+            let renderer = RTCMTLVideoView(frame: self.webSocketListener!.remoteVideoView.frame)
+            videoTrack?.add(renderer)
+            let mediaStream = self.peerConnectionFactory!.mediaStream(withStreamId: "105")
+            self.remoteParticipant!.mediaStream = mediaStream
+            self.remoteParticipant?.peerConnection?.remove(stream)
+            // self.remoteParticipant?.peerConnection?.add(stream)
+        }
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
+        print("peerConnection did remote stream")
+    }
+    
+    func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
+        print("peerConnection should negotiate")
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
+        print("peerConnection new connection state: \(newState)")
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
+        print("peerConnection new gathering state: \(newState)")
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
+        if peerConnection == self.localPeer {
+            var iceCandidateParams: [String: String] = [:]
+            iceCandidateParams["sdpMid"] = candidate.sdpMid
+            iceCandidateParams["sdpMLineIndex"] = String(candidate.sdpMLineIndex)
+            iceCandidateParams["candidate"] = String(candidate.sdp)
+            if self.webSocketListener!.userId != nil {
+                iceCandidateParams["endpointName"] =  self.webSocketListener!.userId
+                self.webSocketListener!.sendJson(method: "onIceCandidate", params: iceCandidateParams)
+            } else {
+                self.webSocketListener!.addIceCandidate(iceCandidateParams: iceCandidateParams)
+            }
+            print("NEW local ice candidate")
+        } else {
+            var iceCandidateParams: [String: String] = [:]
+            iceCandidateParams["sdpMid"] = candidate.sdpMid
+            iceCandidateParams["sdpMLineIndex"] = String(candidate.sdpMLineIndex)
+            iceCandidateParams["candidate"] = String(candidate.sdp)
+            iceCandidateParams["endpointName"] =  "remoteParticipant.id"
+            self.webSocketListener!.sendJson(method: "onIceCandidate", params: iceCandidateParams)
+            print("NEW remote ice candidate")
+        }
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
+        
+    }
+    
+    func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
+        print("peerConnection did open data channel")
     }
 }

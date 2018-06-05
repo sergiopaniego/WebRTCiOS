@@ -9,7 +9,7 @@
 import Foundation
 import WebRTC
 
-class localPeerConnectionDelegate: CustomPeerConnectionDelegate {
+class LocalPeerConnectionDelegate: CustomPeerConnectionDelegate {
     
     var webSocketAdapter: WebSocketListener
     

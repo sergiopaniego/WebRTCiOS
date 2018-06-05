@@ -13,12 +13,12 @@ class remotePeerConnectionDelegate: CustomPeerConnectionDelegate {
     
     var webSocketAdapter: WebSocketListener
     var remoteParticipant: RemoteParticipant
-    var view: UIView
+    var view: UIView?
     
-    init(webSocketAdapter: WebSocketListener, remoteParticipant: RemoteParticipant, view: UIView) {
+    init(webSocketAdapter: WebSocketListener, remoteParticipant: RemoteParticipant/*, view: UIView*/) {
         self.webSocketAdapter = webSocketAdapter
         self.remoteParticipant = remoteParticipant
-        self.view = view
+        // self.view = view
     }
     
     override func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
@@ -35,7 +35,7 @@ class remotePeerConnectionDelegate: CustomPeerConnectionDelegate {
         super.peerConnection(peerConnection, didAdd: stream)
         let remoteVideoView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
         remoteParticipant.view = remoteVideoView
-        self.view.addSubview(remoteVideoView)
+        self.view?.addSubview(remoteVideoView)
         let renderer = RTCMTLVideoView(frame: remoteVideoView.frame)
         stream.videoTracks.first?.add(renderer)
         self.embedView(renderer, into: remoteVideoView)
