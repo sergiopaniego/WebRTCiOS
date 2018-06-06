@@ -114,22 +114,23 @@ class PeersManager: NSObject {
     }
     
     func embedView(_ view: UIView, into containerView: UIView) {
-        DispatchQueue.main.async {
+        containerView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let width = (UIScreen.main.bounds.width)
+        let height = (UIScreen.main.bounds.height) / 2
+        // let width = 300
+        // let height = 300
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
+                                                                    options: NSLayoutFormatOptions.alignAllCenterX,
+                                                                    metrics: nil,
+                                                                    views: ["view":view]))
         
-            containerView.addSubview(view)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(500)]",
-                                                                        options: NSLayoutFormatOptions.alignAllCenterX,
-                                                                        metrics: nil,
-                                                                        views: ["view":view]))
-            
-            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(500)]",
-                                                                        options:NSLayoutFormatOptions.alignAllCenterY,
-                                                                        metrics: nil,
-                                                                        views: ["view":view]))
-            containerView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-            containerView.layoutIfNeeded()
-        }
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
+                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
+                                                                    metrics: nil,
+                                                                    views: ["view":view]))
+        containerView.backgroundColor = UIColor.white.withAlphaComponent(0)
+        containerView.layoutIfNeeded()
     }
 }
 
@@ -149,13 +150,6 @@ extension PeersManager: RTCPeerConnectionDelegate {
                 print("Weird looking stream")
             }
             self.remoteStream = stream
-            /*self.renderer = RTCMTLVideoView(frame: self.webSocketListener!.remoteVideoView.frame)
-            self.remoteStream = stream
-            // self.remotePeer!.add(stream)
-            // self.remotePeer!.delegate = self
-            let videoTrack = stream.videoTracks[0]
-            videoTrack.add(self.renderer)
-            self.embedView(self.renderer, into: self.webSocketListener!.remoteVideoView)*/
         }
     }
     

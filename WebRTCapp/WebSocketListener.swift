@@ -159,11 +159,13 @@ class WebSocketListener: WebSocketDelegate {
         if (localPeer!.remoteDescription != nil) {
             participants[remoteParticipantId!]!.peerConnection!.setRemoteDescription(sessionDescription, completionHandler: {(error) in
                 print("Remote Peer Remote Description set: " + error.debugDescription)
-                DispatchQueue.main.async {
-                    let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
-                    let videoTrack = self.peersManager.remoteStream!.videoTracks[0]
-                    videoTrack.add(renderer)
-                    self.embedView(renderer, into: self.remoteVideoView)
+                if self.peersManager.remoteStream != nil {
+                    DispatchQueue.main.async {
+                        let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
+                        let videoTrack = self.peersManager.remoteStream!.videoTracks[0]
+                        videoTrack.add(renderer)
+                        self.embedView(renderer, into: self.remoteVideoView)
+                    }
                 }
             })
         } else {
@@ -237,6 +239,7 @@ class WebSocketListener: WebSocketDelegate {
             remoteOfferParams["sender"] = remoteParticipantPublished.id! + "_webcam"
             self.sendJson(method: "receiveVideoFrom", params: remoteOfferParams)
         })
+        self.peersManager.remotePeer!.delegate = self.peersManager
     }
     
     func participantLeft(params: Dictionary<String, Any>) {
