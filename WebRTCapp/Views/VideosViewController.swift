@@ -38,8 +38,14 @@ class VideosViewController: UIViewController {
         print("URL came : " + url)
         print("Session Name: " + sessionName)
         print("Participant: " + participantName)
-        // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    @IBAction func backAction(_ sender: UIButton) {
+        print("BUTTTON PRESSED")
+        self.socket?.sendJson(method: "leaveRoom", params: [:])
+        self.socket?.socket.disconnect()
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -212,14 +218,14 @@ class VideosViewController: UIViewController {
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         let width = (UIScreen.main.bounds.width)
-        let height = (UIScreen.main.bounds.height / 2)
+        let height = (UIScreen.main.bounds.height)
         containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
-                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
+                                                                    options: NSLayoutFormatOptions(),
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         
         containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
-                                                                    options:NSLayoutFormatOptions.alignAllCenterX,
+                                                                    options:NSLayoutFormatOptions(),
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         containerView.layoutIfNeeded()

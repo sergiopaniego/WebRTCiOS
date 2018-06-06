@@ -128,8 +128,7 @@ class WebSocketListener: WebSocketDelegate {
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
             participants[remoteParticipant.id!] = remoteParticipant
-            setRemoteParticipantName(name: participant[JSONConstants.Metadata]! as! String, participant: remoteParticipant)
-            // createVideoView(remoteParticipant: remoteParticipant)
+            // setRemoteParticipantName(name: participant[JSONConstants.Metadata]! as! String, participant: remoteParticipant)
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
@@ -162,8 +161,6 @@ class WebSocketListener: WebSocketDelegate {
                 print("Remote Peer Remote Description set: " + error.debugDescription)
                 DispatchQueue.main.async {
                     let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
-                    // self.participants[self.remoteParticipantId!]!.peerConnection!.add(self.peersManager.remoteStream!)
-                    // self.remotePeer!.delegate = self
                     let videoTrack = self.peersManager.remoteStream!.videoTracks[0]
                     videoTrack.add(renderer)
                     self.embedView(renderer, into: self.remoteVideoView)
@@ -216,8 +213,7 @@ class WebSocketListener: WebSocketDelegate {
         do {
             if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
             {
-                setRemoteParticipantName(name: metadata["clientData"]! as! String, participant: remoteParticipant)
-                // createVideoView(remoteParticipant: remoteParticipant)
+                // setRemoteParticipantName(name: metadata["clientData"]! as! String, participant: remoteParticipant)
                 self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             } else {
                 print("bad json")
@@ -281,24 +277,23 @@ class WebSocketListener: WebSocketDelegate {
         iceCandidatesParams!.append(iceCandidateParams)
     }
     
-    func createVideoView(remoteParticipant: RemoteParticipant) {
-        // let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
-        // self.embedView(renderer, into: self.remoteVideoView)
-    }
-    
     func embedView(_ view: UIView, into containerView: UIView) {
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(500)]",
+        let width = (UIScreen.main.bounds.width)
+        let height = (UIScreen.main.bounds.height) / 2
+        // let width = 300
+        // let height = 300
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
                                                                     options: NSLayoutFormatOptions.alignAllCenterX,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
         
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(500)]",
-                                                                    options:NSLayoutFormatOptions.alignAllCenterY,
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
+                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
                                                                     metrics: nil,
                                                                     views: ["view":view]))
-        containerView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        containerView.backgroundColor = UIColor.white.withAlphaComponent(0)
         containerView.layoutIfNeeded()
     }
     

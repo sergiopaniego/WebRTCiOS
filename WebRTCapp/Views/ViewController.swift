@@ -62,7 +62,6 @@ class ViewController: UIViewController {
             vc?.participantName = participantName.text!
         }
     }
-    
 
     @IBAction func startSocket(_ sender: UIButton) {
         print("Start new View!")

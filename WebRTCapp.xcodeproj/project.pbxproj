@@ -10,9 +10,6 @@
 		1ECFAA37867958ECF068355C /* Pods_WebRTCappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 998B801499BFB72757368E6E /* Pods_WebRTCappTests.framework */; };
 		39D55D4F21E334C99F83498E /* Pods_WebRTCapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */; };
 		C00F44E620989D110096441B /* WebSocketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00F44E520989D110096441B /* WebSocketListener.swift */; };
-		C01121CE20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01121CD20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift */; };
-		C02234D020B73A04009F01DC /* CustomPeerConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02234CF20B73A04009F01DC /* CustomPeerConnectionDelegate.swift */; };
-		C02234D220B74056009F01DC /* LocalPeerConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02234D120B74056009F01DC /* LocalPeerConnectionDelegate.swift */; };
 		C028D735207A676B000943F2 /* Pods_WebRTCapp.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C079BB9F20BFEC190026C538 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C079BB9E20BFEC190026C538 /* VideosViewController.swift */; };
 		C0AD528520B60E0F00354475 /* JSONConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528420B60E0F00354475 /* JSONConstants.swift */; };
@@ -56,9 +53,6 @@
 		998B801499BFB72757368E6E /* Pods_WebRTCappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebRTCappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E575689992FDF6C7EFDACC /* Pods_WebRTCapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebRTCapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00F44E520989D110096441B /* WebSocketListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketListener.swift; sourceTree = "<group>"; };
-		C01121CD20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = remotePeerConnectionDelegate.swift; sourceTree = "<group>"; };
-		C02234CF20B73A04009F01DC /* CustomPeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPeerConnectionDelegate.swift; sourceTree = "<group>"; };
-		C02234D120B74056009F01DC /* LocalPeerConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPeerConnectionDelegate.swift; sourceTree = "<group>"; };
 		C079BB9E20BFEC190026C538 /* VideosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		C0AD528420B60E0F00354475 /* JSONConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONConstants.swift; sourceTree = "<group>"; };
 		C0AD528620B60E2A00354475 /* PeersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeersManager.swift; sourceTree = "<group>"; };
@@ -116,16 +110,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C0CD3F8520BC3E950039C77F /* PeerConnection */ = {
-			isa = PBXGroup;
-			children = (
-				C02234CF20B73A04009F01DC /* CustomPeerConnectionDelegate.swift */,
-				C02234D120B74056009F01DC /* LocalPeerConnectionDelegate.swift */,
-				C01121CD20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift */,
-			);
-			path = PeerConnection;
-			sourceTree = "<group>";
-		};
 		C0FF5EF92056C9B20035315C = {
 			isa = PBXGroup;
 			children = (
@@ -150,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				C00023AE20BFF63A00AA26B4 /* Views */,
-				C0CD3F8520BC3E950039C77F /* PeerConnection */,
 				C0FF5F052056C9B20035315C /* AppDelegate.swift */,
 				C0FF5F092056C9B20035315C /* Main.storyboard */,
 				C0FF5F0C2056C9B20035315C /* Assets.xcassets */,
@@ -355,13 +338,10 @@
 				C0FD5A8E207A342800371BD5 /* RemoteParticipant.swift in Sources */,
 				C079BB9F20BFEC190026C538 /* VideosViewController.swift in Sources */,
 				C0AD528520B60E0F00354475 /* JSONConstants.swift in Sources */,
-				C02234D020B73A04009F01DC /* CustomPeerConnectionDelegate.swift in Sources */,
 				C0AD528720B60E2A00354475 /* PeersManager.swift in Sources */,
 				C0AD528920B60E4400354475 /* CustomSdpObserver.swift in Sources */,
 				C0FF5F062056C9B20035315C /* AppDelegate.swift in Sources */,
 				C00F44E620989D110096441B /* WebSocketListener.swift in Sources */,
-				C01121CE20B85E8C00C6F7E2 /* remotePeerConnectionDelegate.swift in Sources */,
-				C02234D220B74056009F01DC /* LocalPeerConnectionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
