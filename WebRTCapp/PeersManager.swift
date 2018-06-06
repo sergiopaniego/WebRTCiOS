@@ -22,7 +22,9 @@ class PeersManager: NSObject {
     var localAudioTrack: RTCAudioTrack?
     var peerConnection: RTCPeerConnection?
     var view: UIView!
-    private var remoteStream: RTCMediaStream?
+    var renderer: RTCMTLVideoView!
+    private var videoCapturer: RTCVideoCapturer?
+    var remoteStream: RTCMediaStream?
     var remoteParticipant: RemoteParticipant?
     
     init(view: UIView) {
@@ -87,10 +89,10 @@ class PeersManager: NSObject {
         config.bundlePolicy = .maxCompat
         config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
         config.rtcpMuxPolicy = .require
-        // let delegate = remotePeerConnectionDelegate(webSocketAdapter: webSocketListener!, remoteParticipant: remoteParticipant/*, view: view*/)
         self.remotePeer = (peerConnectionFactory?.peerConnection(with: config, constraints: sdpConstraints, delegate: nil))!
         remoteParticipant.peerConnection = self.remotePeer
         self.remoteParticipant = remoteParticipant
+        self.remoteParticipant?.peerConnection = self.remotePeer
     }
     
     func hangup() {
@@ -110,6 +112,25 @@ class PeersManager: NSObject {
             videoGrabber.dispose()
         }*/
     }
+    
+    func embedView(_ view: UIView, into containerView: UIView) {
+        DispatchQueue.main.async {
+        
+            containerView.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(500)]",
+                                                                        options: NSLayoutFormatOptions.alignAllCenterX,
+                                                                        metrics: nil,
+                                                                        views: ["view":view]))
+            
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(500)]",
+                                                                        options:NSLayoutFormatOptions.alignAllCenterY,
+                                                                        metrics: nil,
+                                                                        views: ["view":view]))
+            containerView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+            containerView.layoutIfNeeded()
+        }
+    }
 }
 
 extension PeersManager: RTCPeerConnectionDelegate {
@@ -120,17 +141,21 @@ extension PeersManager: RTCPeerConnectionDelegate {
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         if peerConnection == self.localPeer {
-            self.remoteStream = stream
             print("local peerConnection did add stream")
         } else {
             print("remote peerConnection did add stream")
-            let videoTrack = stream.videoTracks.first
-            let renderer = RTCMTLVideoView(frame: self.webSocketListener!.remoteVideoView.frame)
-            videoTrack?.add(renderer)
-            let mediaStream = self.peerConnectionFactory!.mediaStream(withStreamId: "105")
-            self.remoteParticipant!.mediaStream = mediaStream
-            self.remoteParticipant?.peerConnection?.remove(stream)
-            // self.remoteParticipant?.peerConnection?.add(stream)
+            
+            if (stream.audioTracks.count > 1 || stream.videoTracks.count > 1) {
+                print("Weird looking stream")
+            }
+            self.remoteStream = stream
+            /*self.renderer = RTCMTLVideoView(frame: self.webSocketListener!.remoteVideoView.frame)
+            self.remoteStream = stream
+            // self.remotePeer!.add(stream)
+            // self.remotePeer!.delegate = self
+            let videoTrack = stream.videoTracks[0]
+            videoTrack.add(self.renderer)
+            self.embedView(self.renderer, into: self.webSocketListener!.remoteVideoView)*/
         }
     }
     
@@ -139,15 +164,19 @@ extension PeersManager: RTCPeerConnectionDelegate {
     }
     
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
-        print("peerConnection should negotiate")
+        if peerConnection == self.localPeer {
+            print("local peerConnection should negotiate")
+        } else {
+            print("remote peerConnection should negotiate")
+        }
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        print("peerConnection new connection state: \(newState)")
+        print("peerConnection new connection state: \(newState.rawValue)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        print("peerConnection new gathering state: \(newState)")
+        print("peerConnection new gathering state: \(newState.rawValue)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {

@@ -127,6 +127,7 @@ class VideosViewController: UIViewController {
                     let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
                     let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
                     self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
+                    self.createRemoteVideoView()
                 }
             }
             task.resume()
@@ -138,6 +139,11 @@ class VideosViewController: UIViewController {
         self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
+    }
+    
+    func createRemoteVideoView() {
+        self.renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
+        self.embedView(self.renderer, into: self.remoteVideoView)
     }
     
     func createLocalVideoView() {
@@ -183,16 +189,19 @@ class VideosViewController: UIViewController {
         let stream = self.peersManager!.peerConnectionFactory!.mediaStream(withStreamId: streamId)
         
         // Audio
-        // let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
         let audioConstrains = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: nil)
         let audioSource = self.peersManager!.peerConnectionFactory!.audioSource(with: audioConstrains)
         let audioTrack = self.peersManager!.peerConnectionFactory!.audioTrack(with: audioSource, trackId: "audio0")
+        self.localAudioTrack = audioTrack
+        self.peersManager!.localAudioTrack = audioTrack
         stream.addAudioTrack(audioTrack)
         
         // Video
         let videoSource = self.peersManager!.peerConnectionFactory!.videoSource()
         self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
         let videoTrack = self.peersManager!.peerConnectionFactory!.videoTrack(with: videoSource, trackId: "video0")
+        self.peersManager!.localVideoTrack = videoTrack
+        self.localVideoTrack = videoTrack
         stream.addVideoTrack(videoTrack)
         
         self.peersManager!.localPeer!.add(stream)
