@@ -31,6 +31,8 @@ class VideosViewController: UIViewController {
     var participantName: String = ""
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteVideoView: UIView!
+    @IBOutlet weak var remoteVideoView2: UIView!
+    @IBOutlet weak var remoteVideoView3: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,7 +135,6 @@ class VideosViewController: UIViewController {
                     let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
                     let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
                     self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
-                    self.createRemoteVideoView()
                 }
             }
             task.resume()
@@ -145,11 +146,6 @@ class VideosViewController: UIViewController {
         self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
-    }
-    
-    func createRemoteVideoView() {
-        self.renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
-        self.embedView(self.renderer, into: self.remoteVideoView)
     }
     
     func createLocalVideoView() {

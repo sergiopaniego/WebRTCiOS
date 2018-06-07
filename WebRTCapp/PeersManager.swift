@@ -112,26 +112,7 @@ class PeersManager: NSObject {
             videoGrabber.dispose()
         }*/
     }
-    
-    func embedView(_ view: UIView, into containerView: UIView) {
-        containerView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let width = (UIScreen.main.bounds.width)
-        let height = (UIScreen.main.bounds.height) / 2
-        // let width = 300
-        // let height = 300
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
-                                                                    options: NSLayoutFormatOptions.alignAllCenterX,
-                                                                    metrics: nil,
-                                                                    views: ["view":view]))
-        
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
-                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
-                                                                    metrics: nil,
-                                                                    views: ["view":view]))
-        containerView.backgroundColor = UIColor.white.withAlphaComponent(0)
-        containerView.layoutIfNeeded()
-    }
+
 }
 
 extension PeersManager: RTCPeerConnectionDelegate {

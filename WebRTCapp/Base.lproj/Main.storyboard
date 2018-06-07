@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad10_5" orientation="portrait">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,11 +16,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="WebRTCapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jDB-hx-jWU">
-                                <rect key="frame" x="150" y="536" width="534" height="30"/>
+                                <rect key="frame" x="150" y="536" width="468" height="30"/>
                                 <color key="backgroundColor" red="0.078431372549019607" green="0.52941176470588236" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="0hL-5x-MTm" userLabel="height = 50"/>
@@ -35,7 +36,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="wss://demos.openvidu.io:8443/openvidu" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="STK-Bg-1oY">
-                                <rect key="frame" x="100" y="259" width="634" height="30"/>
+                                <rect key="frame" x="100" y="259" width="568" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JHm-rv-8h7"/>
                                 </constraints>
@@ -44,7 +45,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="SessionA" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SGN-X3-gfk">
-                                <rect key="frame" x="100" y="318" width="634" height="30"/>
+                                <rect key="frame" x="100" y="318" width="568" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="BET-rn-amS"/>
                                 </constraints>
@@ -53,7 +54,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Participant1" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4yn-bG-MYO">
-                                <rect key="frame" x="100" y="377" width="634" height="30"/>
+                                <rect key="frame" x="100" y="377" width="568" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="vZM-r8-5xH"/>
                                 </constraints>
@@ -101,22 +102,15 @@
             <objects>
                 <viewController id="h2t-sa-kc1" customClass="VideosViewController" customModule="WebRTCapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6jS-uv-7FS">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0cg-iV-E81">
-                                <rect key="frame" x="0.0" y="100" width="834" height="452"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0cg-iV-E81">
+                                <rect key="frame" x="0.0" y="100" width="768" height="610"/>
+                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
-                                <rect key="frame" x="0.0" y="549" width="834" height="563"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-Lj-p7H" userLabel="Back Button">
-                                <rect key="frame" x="20" y="20" width="76" height="55"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-Lj-p7H" userLabel="Back Button">
+                                <rect key="frame" x="20" y="20" width="10" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
@@ -124,18 +118,55 @@
                                     <segue destination="BYZ-38-t0r" kind="show" id="fri-pv-DrK"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n6s-tR-m5z">
+                                <rect key="frame" x="0.0" y="789" width="768" height="235"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
+                                        <rect key="frame" x="0.0" y="0.0" width="268" height="235"/>
+                                        <color key="backgroundColor" red="0.078431372550000003" green="0.52941176469999995" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bh4-tD-rsd" userLabel="Remote Video View">
+                                        <rect key="frame" x="268" y="0.0" width="287" height="235"/>
+                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9dl-1Q-ggt" userLabel="Remote Video View">
+                                        <rect key="frame" x="555" y="0.0" width="213" height="235"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="9dl-1Q-ggt" firstAttribute="leading" secondItem="n6s-tR-m5z" secondAttribute="leading" constant="555" id="tir-z8-T1v"/>
+                                    <constraint firstItem="Bh4-tD-rsd" firstAttribute="leading" secondItem="n6s-tR-m5z" secondAttribute="leading" constant="268" id="zgH-hf-6V3"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="top" secondItem="6jS-uv-7FS" secondAttribute="top" constant="789" id="4eX-26-enS"/>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="bottom" secondItem="3p0-0t-8VP" secondAttribute="bottom" id="HAi-rg-XQK"/>
+                            <constraint firstItem="vcm-Lj-p7H" firstAttribute="leading" secondItem="6jS-uv-7FS" secondAttribute="leadingMargin" id="KQk-am-biC"/>
+                            <constraint firstItem="vcm-Lj-p7H" firstAttribute="top" secondItem="3p0-0t-8VP" secondAttribute="top" id="Q5v-bH-4Zh"/>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="leading" secondItem="0cg-iV-E81" secondAttribute="leading" id="YgO-zH-shx"/>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="trailing" secondItem="0cg-iV-E81" secondAttribute="trailing" id="a5J-g5-MOb"/>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="leading" secondItem="3p0-0t-8VP" secondAttribute="leading" id="gJl-31-h4i"/>
+                            <constraint firstItem="0cg-iV-E81" firstAttribute="top" secondItem="6jS-uv-7FS" secondAttribute="top" constant="100" id="hm9-0D-beU"/>
+                            <constraint firstItem="0cg-iV-E81" firstAttribute="top" secondItem="vcm-Lj-p7H" secondAttribute="bottom" constant="25" id="ktE-Jb-Zm1"/>
+                            <constraint firstItem="n6s-tR-m5z" firstAttribute="trailing" secondItem="3p0-0t-8VP" secondAttribute="trailing" id="tNp-y3-QCG"/>
+                            <constraint firstItem="3p0-0t-8VP" firstAttribute="trailing" secondItem="vcm-Lj-p7H" secondAttribute="trailing" constant="738" id="w54-7V-pjM"/>
+                            <constraint firstItem="3p0-0t-8VP" firstAttribute="bottom" secondItem="0cg-iV-E81" secondAttribute="bottom" constant="314" id="xqA-Lw-Ts2"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="3p0-0t-8VP"/>
                     </view>
                     <connections>
                         <outlet property="localVideoView" destination="0cg-iV-E81" id="mqs-Xo-ew6"/>
                         <outlet property="remoteVideoView" destination="SAC-Vl-Tq3" id="ybG-e7-e5a"/>
+                        <outlet property="remoteVideoView2" destination="Bh4-tD-rsd" id="B6k-uX-QGA"/>
+                        <outlet property="remoteVideoView3" destination="9dl-1Q-ggt" id="oC7-UB-87G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fwI-dC-Nlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1038.1294964028777" y="133.27338129496403"/>
+            <point key="canvasLocation" x="1037.5" y="133.0078125"/>
         </scene>
     </scenes>
 </document>

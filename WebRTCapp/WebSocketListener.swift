@@ -128,7 +128,6 @@ class WebSocketListener: WebSocketDelegate {
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
             participants[remoteParticipant.id!] = remoteParticipant
-            // setRemoteParticipantName(name: participant[JSONConstants.Metadata]! as! String, participant: remoteParticipant)
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
@@ -145,12 +144,7 @@ class WebSocketListener: WebSocketDelegate {
             self.peersManager.remotePeer!.delegate = self.peersManager
         }
     }
-    
-    func setRemoteParticipantName(name: String, participant: RemoteParticipant) {
-        // Sets participant name on video element
-    }
-    
-    
+
     func saveAnwer(json: [String:Any]) {
         let sessionDescription = RTCSessionDescription(type: RTCSdpType.answer, sdp: json["sdpAnswer"] as! String)
         if localPeer == nil {
@@ -215,7 +209,6 @@ class WebSocketListener: WebSocketDelegate {
         do {
             if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
             {
-                // setRemoteParticipantName(name: metadata["clientData"]! as! String, participant: remoteParticipant)
                 self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             } else {
                 print("bad json")
@@ -283,21 +276,8 @@ class WebSocketListener: WebSocketDelegate {
     func embedView(_ view: UIView, into containerView: UIView) {
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        let width = (UIScreen.main.bounds.width)
-        let height = (UIScreen.main.bounds.height) / 2
-        // let width = 300
-        // let height = 300
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[view(" + width.description + ")]",
-                                                                    options: NSLayoutFormatOptions.alignAllCenterX,
-                                                                    metrics: nil,
-                                                                    views: ["view":view]))
-        
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[view(" + height.description + ")]",
-                                                                    options: NSLayoutFormatOptions.alignAllCenterY,
-                                                                    metrics: nil,
-                                                                    views: ["view":view]))
-        containerView.backgroundColor = UIColor.white.withAlphaComponent(0)
-        containerView.layoutIfNeeded()
+        containerView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        // containerView.layoutIfNeeded()
     }
     
 }
