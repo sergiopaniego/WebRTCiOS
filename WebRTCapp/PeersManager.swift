@@ -24,11 +24,12 @@ class PeersManager: NSObject {
     var view: UIView!
     var renderer: RTCMTLVideoView!
     private var videoCapturer: RTCVideoCapturer?
-    var remoteStream: RTCMediaStream?
+    var remoteStreams: [RTCMediaStream]
     var remoteParticipant: RemoteParticipant?
     
     init(view: UIView) {
         self.view = view
+        self.remoteStreams = []
     }
     
     func setWebSocketAdapter(webSocketAdapter: WebSocketListener) {
@@ -130,7 +131,8 @@ extension PeersManager: RTCPeerConnectionDelegate {
             if (stream.audioTracks.count > 1 || stream.videoTracks.count > 1) {
                 print("Weird looking stream")
             }
-            self.remoteStream = stream
+            remoteStreams.append(stream)
+            // self.remoteStream = stream
         }
     }
     

@@ -29,9 +29,9 @@ class WebSocketListener: WebSocketDelegate {
     var peersManager: PeersManager
     var token: String
     private var videoCapturer: RTCVideoCapturer?
-    var remoteVideoView: UIView!
+    var views: [UIView]!
     
-    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, view: UIView) {
+    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, views: [UIView]) {
         self.url = url
         self.sessionName = sessionName
         self.participantName = participantName
@@ -40,7 +40,7 @@ class WebSocketListener: WebSocketDelegate {
         self.iceCandidatesParams = []
         self.token = token
         self.participants = [String: RemoteParticipant]()
-        self.remoteVideoView = view
+        self.views = views
         socket = WebSocket(url: URL(string: url)!)
         socket.disableSSLCertValidation = useSSL
         socket.delegate = self
@@ -127,7 +127,8 @@ class WebSocketListener: WebSocketDelegate {
             self.remoteParticipantId = participant[JSONConstants.Id]! as? String
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
-            participants[remoteParticipant.id!] = remoteParticipant
+            self.participants[remoteParticipant.id!] = remoteParticipant
+            print("Count :" + participants.count.description)
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
@@ -153,12 +154,13 @@ class WebSocketListener: WebSocketDelegate {
         if (localPeer!.remoteDescription != nil) {
             participants[remoteParticipantId!]!.peerConnection!.setRemoteDescription(sessionDescription, completionHandler: {(error) in
                 print("Remote Peer Remote Description set: " + error.debugDescription)
-                if self.peersManager.remoteStream != nil {
+                if self.peersManager.remoteStreams.count >= self.participants.count {
                     DispatchQueue.main.async {
-                        let renderer = RTCMTLVideoView(frame: self.remoteVideoView.frame)
-                        let videoTrack = self.peersManager.remoteStream!.videoTracks[0]
+                        print("Count: " + self.participants.count.description)
+                        let renderer = RTCMTLVideoView(frame: self.views[self.participants.count-1].frame)
+                        let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
                         videoTrack.add(renderer)
-                        self.embedView(renderer, into: self.remoteVideoView)
+                        self.embedView(renderer, into: self.views[self.participants.count-1])
                     }
                 }
             })
@@ -203,6 +205,7 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipant = RemoteParticipant()
         remoteParticipant.id = params[JSONConstants.Id] as? String
         participants[params[JSONConstants.Id] as! String] = remoteParticipant
+        print("Count :" + participants.count.description)
         
         let metadataString = params[JSONConstants.Metadata] as! String
         let data = metadataString.data(using: .utf8)!
