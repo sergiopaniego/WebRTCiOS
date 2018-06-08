@@ -32,7 +32,6 @@ class VideosViewController: UIViewController {
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteVideoView: UIView!
     @IBOutlet weak var remoteVideoView2: UIView!
-    @IBOutlet weak var remoteVideoView3: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,7 +142,7 @@ class VideosViewController: UIViewController {
     }
     
     func createSocket(token: String) {
-        self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, view: self.remoteVideoView)
+        self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, view: self.remoteVideoView2)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
     }

@@ -275,8 +275,10 @@ class WebSocketListener: WebSocketDelegate {
     
     func embedView(_ view: UIView, into containerView: UIView) {
         containerView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        // view.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        view.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         // containerView.layoutIfNeeded()
     }
     

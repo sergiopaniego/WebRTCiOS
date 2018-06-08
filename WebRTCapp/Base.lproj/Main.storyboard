@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jDB-hx-jWU">
-                                <rect key="frame" x="150" y="536" width="468" height="30"/>
+                                <rect key="frame" x="150" y="537" width="468" height="30"/>
                                 <color key="backgroundColor" red="0.078431372549019607" green="0.52941176470588236" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="0hL-5x-MTm" userLabel="height = 50"/>
@@ -36,7 +36,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="wss://demos.openvidu.io:8443/openvidu" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="STK-Bg-1oY">
-                                <rect key="frame" x="100" y="259" width="568" height="30"/>
+                                <rect key="frame" x="100" y="259" width="568" height="30.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JHm-rv-8h7"/>
                                 </constraints>
@@ -45,7 +45,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="SessionA" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SGN-X3-gfk">
-                                <rect key="frame" x="100" y="318" width="568" height="30"/>
+                                <rect key="frame" x="100" y="318.5" width="568" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="BET-rn-amS"/>
                                 </constraints>
@@ -54,7 +54,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Participant1" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4yn-bG-MYO">
-                                <rect key="frame" x="100" y="377" width="568" height="30"/>
+                                <rect key="frame" x="100" y="377.5" width="568" height="30.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="vZM-r8-5xH"/>
                                 </constraints>
@@ -122,21 +122,21 @@
                                 <rect key="frame" x="0.0" y="789" width="768" height="235"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
-                                        <rect key="frame" x="0.0" y="0.0" width="268" height="235"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="386" height="235"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.52941176469999995" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bh4-tD-rsd" userLabel="Remote Video View">
-                                        <rect key="frame" x="268" y="0.0" width="287" height="235"/>
-                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9dl-1Q-ggt" userLabel="Remote Video View">
-                                        <rect key="frame" x="555" y="0.0" width="213" height="235"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="phg-NC-REt">
+                                        <rect key="frame" x="386" y="0.0" width="382" height="235"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bh4-tD-rsd" userLabel="Remote Video View 2">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="235"/>
+                                                <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="9dl-1Q-ggt" firstAttribute="leading" secondItem="n6s-tR-m5z" secondAttribute="leading" constant="555" id="tir-z8-T1v"/>
-                                    <constraint firstItem="Bh4-tD-rsd" firstAttribute="leading" secondItem="n6s-tR-m5z" secondAttribute="leading" constant="268" id="zgH-hf-6V3"/>
+                                    <constraint firstItem="phg-NC-REt" firstAttribute="leading" secondItem="n6s-tR-m5z" secondAttribute="leading" constant="386" id="miE-xL-xFL"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -161,7 +161,6 @@
                         <outlet property="localVideoView" destination="0cg-iV-E81" id="mqs-Xo-ew6"/>
                         <outlet property="remoteVideoView" destination="SAC-Vl-Tq3" id="ybG-e7-e5a"/>
                         <outlet property="remoteVideoView2" destination="Bh4-tD-rsd" id="B6k-uX-QGA"/>
-                        <outlet property="remoteVideoView3" destination="9dl-1Q-ggt" id="oC7-UB-87G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fwI-dC-Nlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
