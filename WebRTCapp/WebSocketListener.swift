@@ -13,7 +13,6 @@ import WebRTC
 class WebSocketListener: WebSocketDelegate {
     let JSON_RPCVERSION = "2.0"
     let useSSL = true
-    
     var socket: WebSocket
     var helloWorldTimer: Timer?
     var id = 0
@@ -28,7 +27,6 @@ class WebSocketListener: WebSocketDelegate {
     var localPeer: RTCPeerConnection?
     var peersManager: PeersManager
     var token: String
-    private var videoCapturer: RTCVideoCapturer?
     var views: [UIView]!
     
     init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, views: [UIView]) {
@@ -208,7 +206,7 @@ class WebSocketListener: WebSocketDelegate {
         let metadataString = params[JSONConstants.Metadata] as! String
         let data = metadataString.data(using: .utf8)!
         do {
-            if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
+            if (try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>) != nil
             {
                 self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             } else {

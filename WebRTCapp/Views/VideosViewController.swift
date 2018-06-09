@@ -13,17 +13,10 @@ import WebRTC
 class VideosViewController: UIViewController {
     
     var peersManager: PeersManager?
-    var session: AVCaptureSession?
-    var input: AVCaptureDeviceInput?
-    var output: AVCapturePhotoOutput?
-    var previewLayer: AVCaptureVideoPreviewLayer?
     var socket: WebSocketListener?
-    var mediaStream: RTCMediaStream?
     var localAudioTrack: RTCAudioTrack?
     var localVideoTrack: RTCVideoTrack?
     var videoSource: RTCVideoSource?
-    private var captureSession: AVCaptureSession?
-    private var audioSession = AVAudioSession.sharedInstance()
     var renderer: RTCMTLVideoView!
     private var videoCapturer: RTCVideoCapturer?
     var url: String = ""

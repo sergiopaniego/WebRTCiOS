@@ -23,7 +23,6 @@ class PeersManager: NSObject {
     var peerConnection: RTCPeerConnection?
     var view: UIView!
     var renderer: RTCMTLVideoView!
-    private var videoCapturer: RTCVideoCapturer?
     var remoteStreams: [RTCMediaStream]
     var remoteParticipant: RemoteParticipant?
     
@@ -95,25 +94,6 @@ class PeersManager: NSObject {
         self.remoteParticipant = remoteParticipant
         self.remoteParticipant?.peerConnection = self.remotePeer
     }
-    
-    func hangup() {
-        if webSocketListener != nil && localPeer != nil {
-            webSocketListener!.sendJson(method: "leaveRoom", params: [:])
-            webSocket!.disconnect()
-            localPeer!.close()
-            var participants = webSocketListener!.participants
-            for remoteParticipant in (participants.values) {
-                remoteParticipant.peerConnection!.close()
-                // views_container.removeView(remoteParticipant.view)
-            }
-        }
-        /*if localVideoTrack != nil {
-            loalVideoView.removeRender(localRender)
-            localVideoView.clearImage()
-            videoGrabber.dispose()
-        }*/
-    }
-
 }
 
 extension PeersManager: RTCPeerConnectionDelegate {
@@ -132,7 +112,6 @@ extension PeersManager: RTCPeerConnectionDelegate {
                 print("Weird looking stream")
             }
             remoteStreams.append(stream)
-            // self.remoteStream = stream
         }
     }
     
