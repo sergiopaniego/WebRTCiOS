@@ -128,7 +128,6 @@ class WebSocketListener: WebSocketDelegate {
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
             self.participants[remoteParticipant.id!] = remoteParticipant
-            print("Count :" + participants.count.description)
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
             let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
@@ -205,7 +204,6 @@ class WebSocketListener: WebSocketDelegate {
         let remoteParticipant = RemoteParticipant()
         remoteParticipant.id = params[JSONConstants.Id] as? String
         participants[params[JSONConstants.Id] as! String] = remoteParticipant
-        print("Count :" + participants.count.description)
         
         let metadataString = params[JSONConstants.Metadata] as! String
         let data = metadataString.data(using: .utf8)!
@@ -241,7 +239,12 @@ class WebSocketListener: WebSocketDelegate {
     func participantLeft(params: Dictionary<String, Any>) {
         let participantId = params["name"] as! String
         participants[participantId]!.peerConnection!.close()
+
         //REMOVE VIEW
+        let renderer = RTCMTLVideoView(frame: self.views[self.participants.count-1].frame)
+        let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
+        videoTrack.remove(renderer)
+        self.views[self.participants.count-1].willRemoveSubview(renderer)
         participants.removeValue(forKey: participantId)
     }
     
