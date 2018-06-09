@@ -110,7 +110,7 @@
                                 <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-Lj-p7H" userLabel="Back Button">
-                                <rect key="frame" x="20" y="20" width="10" height="55"/>
+                                <rect key="frame" x="20" y="20" width="100" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
@@ -152,7 +152,7 @@
                             <constraint firstItem="0cg-iV-E81" firstAttribute="top" secondItem="6jS-uv-7FS" secondAttribute="top" constant="100" id="hm9-0D-beU"/>
                             <constraint firstItem="0cg-iV-E81" firstAttribute="top" secondItem="vcm-Lj-p7H" secondAttribute="bottom" constant="25" id="ktE-Jb-Zm1"/>
                             <constraint firstItem="n6s-tR-m5z" firstAttribute="trailing" secondItem="3p0-0t-8VP" secondAttribute="trailing" id="tNp-y3-QCG"/>
-                            <constraint firstItem="3p0-0t-8VP" firstAttribute="trailing" secondItem="vcm-Lj-p7H" secondAttribute="trailing" constant="738" id="w54-7V-pjM"/>
+                            <constraint firstItem="3p0-0t-8VP" firstAttribute="trailing" secondItem="vcm-Lj-p7H" secondAttribute="trailing" constant="648" id="w54-7V-pjM"/>
                             <constraint firstItem="3p0-0t-8VP" firstAttribute="bottom" secondItem="0cg-iV-E81" secondAttribute="bottom" constant="314" id="xqA-Lw-Ts2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3p0-0t-8VP"/>
