@@ -68,42 +68,15 @@ class VideosViewController: UIViewController {
     }
     
     func start() {
-        let url = URL(string: "https://demos.openvidu.io:8443/api/sessions")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "POST"
-        let json = "{\"customSessionId\": \"SessionB\"}"
-        request.httpBody = json.data(using: .utf8)
-        var responseString = ""
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(String(describing: error))")
-                return
-            }
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-            }
-            responseString = String(data: data, encoding: .utf8)!
-            print(responseString)
-            
-            let jsonData = responseString.data(using: .utf8)!
-            var sessionId = ""
-            do {
-                let json = try JSONSerialization.jsonObject(with: jsonData, options : .allowFragments) as? Dictionary<String,Any>
-                sessionId = json!["id"] as! String
-            } catch let error as NSError {
-                print(error)
-            }
-            // Get Token
-            let url = URL(string: "https://demos.openvidu.io:8443/api/tokens")!
+        if self.url == "https://demos.openvidu.io:8443/openvidu" {
+            let url = URL(string: "https://demos.openvidu.io:8443/api/sessions")!
             var request = URLRequest(url: url)
             request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
             request.httpMethod = "POST"
-            let json = "{\"session\": \"" + sessionId + "\"}"
+            let json = "{\"customSessionId\": \"SessionB\"}"
             request.httpBody = json.data(using: .utf8)
+            var responseString = ""
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 guard let data = data, error == nil else {                                                 // check for fundamental networking error
                     print("error=\(String(describing: error))")
@@ -113,34 +86,72 @@ class VideosViewController: UIViewController {
                     print("statusCode should be 200, but is \(httpStatus.statusCode)")
                     print("response = \(String(describing: response))")
                 }
+                responseString = String(data: data, encoding: .utf8)!
+                print(responseString)
                 
-                let responseString = String(data: data, encoding: .utf8)
-                print("responseString = \(String(describing: responseString))")
-                let jsonData = responseString?.data(using: .utf8)!
-                var token: String = ""
+                let jsonData = responseString.data(using: .utf8)!
+                var sessionId = ""
                 do {
-                    let jsonArray = try JSONSerialization.jsonObject(with: jsonData!, options : .allowFragments) as? Dictionary<String,Any>
-                    if jsonArray?["token"] != nil {
-                        print("response someKey exists")
-                        token = jsonArray?["token"] as! String
-                    } else {
-                        token = "wss://demos.openvidu.io:8443?sessionId=SessionB&token=6m6xfsbfvme5rhek"
-                    }
+                    let json = try JSONSerialization.jsonObject(with: jsonData, options : .allowFragments) as? Dictionary<String,Any>
+                    sessionId = json!["id"] as! String
                 } catch let error as NSError {
                     print(error)
                 }
-                self.createSocket(token: token)
-                
-                DispatchQueue.main.async {
-                    self.createLocalVideoView()
-                    let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
-                    let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
-                    self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
+                // Get Token
+                let url = URL(string: "https://demos.openvidu.io:8443/api/tokens")!
+                var request = URLRequest(url: url)
+                request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+                request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
+                request.httpMethod = "POST"
+                let json = "{\"session\": \"" + sessionId + "\"}"
+                request.httpBody = json.data(using: .utf8)
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                        print("error=\(String(describing: error))")
+                        return
+                    }
+                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                        print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                        print("response = \(String(describing: response))")
+                    }
+                    
+                    let responseString = String(data: data, encoding: .utf8)
+                    print("responseString = \(String(describing: responseString))")
+                    let jsonData = responseString?.data(using: .utf8)!
+                    var token: String = ""
+                    do {
+                        let jsonArray = try JSONSerialization.jsonObject(with: jsonData!, options : .allowFragments) as? Dictionary<String,Any>
+                        if jsonArray?["token"] != nil {
+                            print("response someKey exists")
+                            token = jsonArray?["token"] as! String
+                        } else {
+                            token = "wss://demos.openvidu.io:8443?sessionId=SessionA&token=6m6xfsbfvme5rhek"
+                        }
+                    } catch let error as NSError {
+                        print(error)
+                    }
+                    self.createSocket(token: token)
+                    
+                    DispatchQueue.main.async {
+                        self.createLocalVideoView()
+                        let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+                        let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+                        self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
+                    }
                 }
+                task.resume()
             }
             task.resume()
+        } else {
+            self.createSocket(token: "")
+            
+            DispatchQueue.main.async {
+                self.createLocalVideoView()
+                let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
+                let sdpConstraints = RTCMediaConstraints(mandatoryConstraints: mandatoryConstraints, optionalConstraints: nil)
+                self.peersManager!.createLocalOffer(mediaConstraints: sdpConstraints);
+            }
         }
-        task.resume()
     }
     
     func createSocket(token: String) {
