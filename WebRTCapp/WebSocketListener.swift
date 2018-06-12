@@ -28,8 +28,9 @@ class WebSocketListener: WebSocketDelegate {
     var peersManager: PeersManager
     var token: String
     var views: [UIView]!
+    var names: [UILabel]!
     
-    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, views: [UIView]) {
+    init(url: String, sessionName: String, participantName: String, peersManager: PeersManager, token: String, views: [UIView], names: [UILabel]) {
         self.url = url
         self.sessionName = sessionName
         self.participantName = participantName
@@ -39,6 +40,7 @@ class WebSocketListener: WebSocketDelegate {
         self.token = token
         self.participants = [String: RemoteParticipant]()
         self.views = views
+        self.names = names
         socket = WebSocket(url: URL(string: url)!)
         socket.disableSSLCertValidation = useSSL
         socket.delegate = self
@@ -125,6 +127,16 @@ class WebSocketListener: WebSocketDelegate {
             self.remoteParticipantId = participant[JSONConstants.Id]! as? String
             let remoteParticipant = RemoteParticipant()
             remoteParticipant.id = participant[JSONConstants.Id] as? String
+            let metadataString = participant[JSONConstants.Metadata] as! String
+            let data = metadataString.data(using: .utf8)!
+            do {
+                if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
+                {
+                    remoteParticipant.participantName = metadata["clientData"] as? String
+                }
+            } catch let error as NSError {
+                print(error)
+            }
             self.participants[remoteParticipant.id!] = remoteParticipant
             self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
@@ -161,7 +173,18 @@ class WebSocketListener: WebSocketDelegate {
                         #endif
                         let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
                         videoTrack.add(renderer)
-                        self.embedView(renderer, into: self.views[self.participants.count-1])
+                        // Add the view and name to the first free space available
+                        var index = 0
+                        while (index < 2 && !(self.names[index].text?.isEmpty)!) {
+                            index += 1
+                        }
+                        if index < 2 {
+                            self.names[index].text = self.participants[self.remoteParticipantId!]?.participantName
+                            self.names[index].backgroundColor = UIColor.black
+                            self.names[index].textColor = UIColor.white
+                            self.embedView(renderer, into: self.views[index])
+                            self.participants[self.remoteParticipantId!]?.index = index
+                        }
                     }
                 }
             })
@@ -205,13 +228,13 @@ class WebSocketListener: WebSocketDelegate {
     func participantJoinedMethod(params: Dictionary<String, Any>) {
         let remoteParticipant = RemoteParticipant()
         remoteParticipant.id = params[JSONConstants.Id] as? String
-        participants[params[JSONConstants.Id] as! String] = remoteParticipant
-        
+        self.participants[params[JSONConstants.Id] as! String] = remoteParticipant
         let metadataString = params[JSONConstants.Metadata] as! String
         let data = metadataString.data(using: .utf8)!
         do {
-            if (try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>) != nil
+            if let metadata = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any>
             {
+                remoteParticipant.participantName = metadata["clientData"] as? String
                 self.peersManager.createRemotePeerConnection(remoteParticipant: remoteParticipant)
             } else {
                 print("bad json")
@@ -222,7 +245,7 @@ class WebSocketListener: WebSocketDelegate {
     }
     
     func participantPublished(params: Dictionary<String, Any>) {
-        remoteParticipantId = params[JSONConstants.Id] as? String
+        self.remoteParticipantId = params[JSONConstants.Id] as? String
         print("ID: " + remoteParticipantId!)
         let remoteParticipantPublished = participants[remoteParticipantId!]!
         let mandatoryConstraints = ["OfferToReceiveAudio": "true", "OfferToReceiveVideo": "true"]
@@ -251,7 +274,9 @@ class WebSocketListener: WebSocketDelegate {
         
         let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
         videoTrack.remove(renderer)
-        self.views[self.participants.count-1].willRemoveSubview(renderer)
+        self.views[(participants[participantId]?.index)!].willRemoveSubview(renderer)
+        self.names[(participants[participantId]?.index)!].text = ""
+        self.names[(participants[participantId]?.index)!].backgroundColor = UIColor.clear
         participants.removeValue(forKey: participantId)
     }
     

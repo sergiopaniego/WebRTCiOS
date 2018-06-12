@@ -18,6 +18,8 @@ class RemoteParticipant {
     var audioTrack: RTCAudioTrack?
     var videoTrack: RTCVideoTrack?
     var view: UIView?
+    var participantName: String?
+    var index: Int?
     /*var videoView: RTCSurfaceViewRenderer
     var view: View
     var participantNameText: TextField*/

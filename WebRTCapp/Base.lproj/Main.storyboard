@@ -123,6 +123,15 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
                                         <rect key="frame" x="0.0" y="0.0" width="386" height="235"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8V-zN-DWz">
+                                                <rect key="frame" x="0.0" y="0.0" width="131" height="33"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.52941176469999995" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="RemoteView1" label="RemoteView1"/>
                                     </view>
@@ -131,6 +140,15 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bh4-tD-rsd" userLabel="Remote Video View 2">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="235"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UK9-AA-2L7">
+                                                        <rect key="frame" x="0.0" y="0.0" width="131" height="33"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                                 <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="RemoteView2" label="RemoteView2"/>
                                             </view>
@@ -161,6 +179,8 @@
                     </view>
                     <connections>
                         <outlet property="localVideoView" destination="0cg-iV-E81" id="mqs-Xo-ew6"/>
+                        <outlet property="remoteName1" destination="T8V-zN-DWz" id="BZX-4E-aRY"/>
+                        <outlet property="remoteName2" destination="UK9-AA-2L7" id="wfG-hr-tcs"/>
                         <outlet property="remoteVideoView" destination="SAC-Vl-Tq3" id="ybG-e7-e5a"/>
                         <outlet property="remoteVideoView2" destination="Bh4-tD-rsd" id="B6k-uX-QGA"/>
                     </connections>

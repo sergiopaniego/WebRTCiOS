@@ -25,14 +25,18 @@ class VideosViewController: UIViewController {
     @IBOutlet weak var remoteVideoView: UIView!
     @IBOutlet weak var remoteVideoView2: UIView!
     var remoteViews: [UIView]?
+    @IBOutlet weak var remoteName1: UILabel!
+    @IBOutlet weak var remoteName2: UILabel!
+    var remoteNames: [UILabel]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var someInts = [Int]()
-        someInts.append(1)
         remoteViews = [UIView]()
         remoteViews?.append(remoteVideoView)
         remoteViews?.append(remoteVideoView2)
+        remoteNames = [UILabel]()
+        remoteNames?.append(remoteName1)
+        remoteNames?.append(remoteName2)
     }
     
     @IBAction func backAction(_ sender: UIButton) {
@@ -147,7 +151,7 @@ class VideosViewController: UIViewController {
     }
     
     func createSocket(token: String) {
-        self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, views: remoteViews!)
+        self.socket = WebSocketListener(url: self.url, sessionName: self.sessionName, participantName: self.participantName, peersManager: self.peersManager!, token: token, views: remoteViews!, names: remoteNames!)
         self.peersManager!.webSocketListener = self.socket
         self.peersManager!.start()
     }
