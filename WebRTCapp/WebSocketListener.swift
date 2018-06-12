@@ -154,7 +154,11 @@ class WebSocketListener: WebSocketDelegate {
                 if self.peersManager.remoteStreams.count >= self.participants.count {
                     DispatchQueue.main.async {
                         print("Count: " + self.participants.count.description)
-                        let renderer = RTCMTLVideoView(frame: self.views[self.participants.count-1].frame)
+                        #if arch(arm64)
+                            let renderer = RTCMTLVideoView(frame:  self.views[self.participants.count-1].frame)
+                        #else
+                            let renderer = RTCEAGLVideoView(frame:  self.views[self.participants.count-1].frame)
+                        #endif
                         let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
                         videoTrack.add(renderer)
                         self.embedView(renderer, into: self.views[self.participants.count-1])
@@ -239,7 +243,12 @@ class WebSocketListener: WebSocketDelegate {
         participants[participantId]!.peerConnection!.close()
 
         //REMOVE VIEW
-        let renderer = RTCMTLVideoView(frame: self.views[self.participants.count-1].frame)
+        #if arch(arm64)
+            let renderer = RTCMTLVideoView(frame:  self.views[self.participants.count-1].frame)
+        #else
+            let renderer = RTCEAGLVideoView(frame:  self.views[self.participants.count-1].frame)
+        #endif
+        
         let videoTrack = self.peersManager.remoteStreams[self.participants.count-1].videoTracks[0]
         videoTrack.remove(renderer)
         self.views[self.participants.count-1].willRemoveSubview(renderer)

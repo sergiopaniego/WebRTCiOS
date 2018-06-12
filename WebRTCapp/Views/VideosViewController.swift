@@ -17,7 +17,6 @@ class VideosViewController: UIViewController {
     var localAudioTrack: RTCAudioTrack?
     var localVideoTrack: RTCVideoTrack?
     var videoSource: RTCVideoSource?
-    var renderer: RTCMTLVideoView!
     private var videoCapturer: RTCVideoCapturer?
     var url: String = ""
     var sessionName: String = ""
@@ -154,10 +153,14 @@ class VideosViewController: UIViewController {
     }
     
     func createLocalVideoView() {
-        self.renderer = RTCMTLVideoView(frame: self.localVideoView.frame)
-        startCapureLocalVideo(renderer: self.renderer)
+        #if arch(arm64)
+            let renderer = RTCMTLVideoView(frame: self.localVideoView.frame)
+        #else
+            let renderer = RTCEAGLVideoView(frame: self.localVideoView.frame)
+        #endif
+        startCapureLocalVideo(renderer: renderer)
         
-        self.embedView(self.renderer, into: self.localVideoView)
+        self.embedView(renderer, into: self.localVideoView)
     }
     
     func startCapureLocalVideo(renderer: RTCVideoRenderer) {

@@ -10,7 +10,7 @@
 		4BAAA5332AAF768BE6A786B5 /* Pods_WebRTCappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903D04254665B662BF3F496F /* Pods_WebRTCappTests.framework */; };
 		74F5C95BE0DBBBEED3915C3B /* Pods_WebRTCapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736B4BC6DBAA8E5D1F9588A1 /* Pods_WebRTCapp.framework */; };
 		C00F44E620989D110096441B /* WebSocketListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00F44E520989D110096441B /* WebSocketListener.swift */; };
-		C028D735207A676B000943F2 /* BuildFile in CopyFiles */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C028D735207A676B000943F2 /* (null) in CopyFiles */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C079BB9F20BFEC190026C538 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C079BB9E20BFEC190026C538 /* VideosViewController.swift */; };
 		C0AD528520B60E0F00354475 /* JSONConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528420B60E0F00354475 /* JSONConstants.swift */; };
 		C0AD528720B60E2A00354475 /* PeersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD528620B60E2A00354475 /* PeersManager.swift */; };
@@ -41,7 +41,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C028D735207A676B000943F2 /* BuildFile in CopyFiles */,
+				C028D735207A676B000943F2 /* (null) in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,7 +504,7 @@
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = WebRTCapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -523,7 +523,7 @@
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = WebRTCapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sergio.WebRTCapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

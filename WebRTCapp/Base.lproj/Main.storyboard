@@ -124,6 +124,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAC-Vl-Tq3" userLabel="Remote Video View">
                                         <rect key="frame" x="0.0" y="0.0" width="386" height="235"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.52941176469999995" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="RemoteView1" label="RemoteView1"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="phg-NC-REt">
                                         <rect key="frame" x="386" y="0.0" width="382" height="235"/>
@@ -131,6 +132,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bh4-tD-rsd" userLabel="Remote Video View 2">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="235"/>
                                                 <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="RemoteView2" label="RemoteView2"/>
                                             </view>
                                         </subviews>
                                     </stackView>

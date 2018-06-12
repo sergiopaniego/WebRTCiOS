@@ -22,7 +22,6 @@ class PeersManager: NSObject {
     var localAudioTrack: RTCAudioTrack?
     var peerConnection: RTCPeerConnection?
     var view: UIView!
-    var renderer: RTCMTLVideoView!
     var remoteStreams: [RTCMediaStream]
     var remoteParticipant: RemoteParticipant?
     
