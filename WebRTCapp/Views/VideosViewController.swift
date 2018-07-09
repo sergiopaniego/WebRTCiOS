@@ -64,8 +64,8 @@ class VideosViewController: UIViewController {
     }
     
     func start() {
-        if self.url == "https://demos.openvidu.io:8443/openvidu" {
-            let url = URL(string: "https://demos.openvidu.io:8443/api/sessions")!
+        if self.url == "https://demos.openvidu.io:4443/openvidu" {
+            let url = URL(string: "https://demos.openvidu.io:4443/api/sessions")!
             var request = URLRequest(url: url)
             request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
             request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
@@ -94,7 +94,7 @@ class VideosViewController: UIViewController {
                     print(error)
                 }
                 // Get Token
-                let url = URL(string: "https://demos.openvidu.io:8443/api/tokens")!
+                let url = URL(string: "https://demos.openvidu.io:4443/api/tokens")!
                 var request = URLRequest(url: url)
                 request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
                 request.addValue("Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU", forHTTPHeaderField: "Authorization")
@@ -121,7 +121,7 @@ class VideosViewController: UIViewController {
                             print("response someKey exists")
                             token = jsonArray?["token"] as! String
                         } else {
-                            token = "wss://demos.openvidu.io:8443?sessionId=SessionA&token=6m6xfsbfvme5rhek"
+                            token = "wss://demos.openvidu.io:4443?sessionId=SessionA&token=6m6xfsbfvme5rhek"
                         }
                     } catch let error as NSError {
                         print(error)

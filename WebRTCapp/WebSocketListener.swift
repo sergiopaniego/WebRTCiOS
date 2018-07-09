@@ -184,6 +184,7 @@ class WebSocketListener: WebSocketDelegate {
                             self.names[index].textColor = UIColor.white
                             self.embedView(renderer, into: self.views[index])
                             self.participants[self.remoteParticipantId!]?.index = index
+                            self.views[index].bringSubview(toFront: self.names[index])
                         }
                     }
                 }
@@ -283,6 +284,7 @@ class WebSocketListener: WebSocketDelegate {
     func saveIceCandidate(json: Dictionary<String, Any>, endPointName: String?) {
         let iceCandidate = RTCIceCandidate(sdp: json["candidate"] as! String, sdpMLineIndex: json["sdpMLineIndex"] as! Int32, sdpMid: json["sdpMid"] as? String)
         if (endPointName == nil) {
+            self.localPeer = self.peersManager.localPeer
             self.localPeer!.add(iceCandidate)
         } else {
             participants[endPointName!]!.peerConnection!.add(iceCandidate)
